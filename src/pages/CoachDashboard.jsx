@@ -338,6 +338,13 @@ export default function CoachDashboard() {
             >
               Payment History
             </Button>
+            <Button
+              variant="outline"
+              onClick={() => setActiveTab('sessionHistory')}
+              className="w-1/2 justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
+            >
+              Session History
+            </Button>
           </div>
 
           <TabsContent value="dashboard">
