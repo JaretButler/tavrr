@@ -18,7 +18,7 @@ function GateIndicator({ gate1, gate2, gate3 }) {
 
 export default function HandshakeFeed({ handshakes = [] }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5 scale-[0.8] origin-top">
       <div className="flex items-center justify-between">
         <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
           Live Handshakes
