@@ -336,7 +336,7 @@ export default function CoachDashboard() {
               onClick={() => setActiveTab('payments')}
               className="w-1/2 justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
             >
-              Payments
+              Payment History
             </Button>
           </div>
 
