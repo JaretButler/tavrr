@@ -276,7 +276,7 @@ export default function CoachDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="mb-6">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="dashboard">Instructor Dashboard</TabsTrigger>
             <Button
               variant="default"
               className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] h-8 px-3 text-sm scale-[0.85]"
