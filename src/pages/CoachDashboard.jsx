@@ -3,7 +3,9 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, isToday, startOfMonth, endOfMonth, isSameDay } from 'date-fns';
-import { Calendar, Settings, Bell, RefreshCw } from 'lucide-react';
+import { Calendar, Settings, Bell, RefreshCw, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -129,6 +131,11 @@ export default function CoachDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Link to={createPageUrl('Contacts')}>
+                <Button variant="ghost" size="icon">
+                  <Users className="w-5 h-5 text-neutral-500" />
+                </Button>
+              </Link>
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="w-5 h-5 text-neutral-500" />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-[#0066CC] rounded-full" />
