@@ -309,14 +309,6 @@ export default function CoachDashboard() {
           <div className="mb-6 space-y-3">
             <TabsList>
               <TabsTrigger value="dashboard">Instructor Dashboard</TabsTrigger>
-              <TabsTrigger value="messages" className="relative">
-                Messages
-                {unreadMessages.length > 0 && (
-                  <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
-                    {unreadMessages.length}
-                  </span>
-                )}
-              </TabsTrigger>
               <TabsTrigger value="payments">Payments</TabsTrigger>
             </TabsList>
             
@@ -327,6 +319,19 @@ export default function CoachDashboard() {
               >
                 <Plus className="w-4 h-4" />
                 <span>Schedule Session</span>
+              </Button>
+              <Button
+                variant="default"
+                onClick={() => setActiveTab('messages')}
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Messages</span>
+                {unreadMessages.length > 0 && (
+                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
+                    {unreadMessages.length}
+                  </span>
+                )}
               </Button>
             </div>
           </div>
