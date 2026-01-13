@@ -314,7 +314,7 @@ export default function CoachDashboard() {
             
             <Button
               variant="default"
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] w-full justify-start"
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] w-1/2 justify-start"
             >
               <Plus className="w-4 h-4" />
               <span>Schedule Session</span>
@@ -322,7 +322,7 @@ export default function CoachDashboard() {
             <Button
               variant="default"
               onClick={() => setActiveTab('messages')}
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative w-full justify-start"
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative w-1/2 justify-start"
             >
               <MessageCircle className="w-4 h-4" />
               <span>Messages</span>
