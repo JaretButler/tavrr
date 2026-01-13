@@ -27,6 +27,7 @@ export default function CoachDashboard() {
   const [selectedAthlete, setSelectedAthlete] = useState(null);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showTodaySessionsModal, setShowTodaySessionsModal] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
