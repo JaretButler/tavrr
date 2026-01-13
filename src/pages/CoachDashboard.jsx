@@ -121,9 +121,9 @@ export default function CoachDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/icon_kj3COwIJy0HO0QfNyIYSR.png"
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/b8b585dd5_JXyv2ZNYEizRWxtiY5Iwp.png"
                 alt="Tavrr"
-                className="h-8 w-8"
+                className="h-10"
               />
               <h1 className="text-xl font-medium text-neutral-900">Instructor Jaret</h1>
             </div>
