@@ -126,7 +126,7 @@ export default function CoachDashboard() {
                 className="h-[2.8rem]"
               />
               <div className="border-l border-neutral-200 pl-4">
-                <h1 className="text-xl font-medium text-neutral-900">Instructor Hub</h1>
+                <h1 className="text-xl font-medium text-neutral-900">Instructor {coach?.display_name}</h1>
                 <p className="text-sm text-neutral-400">{format(new Date(), 'EEEE, MMMM d')}</p>
               </div>
             </div>
