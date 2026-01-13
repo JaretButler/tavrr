@@ -331,12 +331,13 @@ export default function CoachDashboard() {
                 </span>
               )}
             </Button>
-            <button
+            <Button
+              variant="outline"
               onClick={() => setActiveTab('payments')}
-              className="text-sm font-medium text-neutral-900 hover:text-[#0066CC] transition-colors"
+              className="w-1/2 justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
             >
               Payments
-            </button>
+            </Button>
           </div>
 
           <TabsContent value="dashboard">
