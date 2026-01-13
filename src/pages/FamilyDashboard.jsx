@@ -17,6 +17,8 @@ import TrainingCalendar from '@/components/calendar/TrainingCalendar';
 import MessageBubble from '@/components/messaging/MessageBubble';
 import MessageInput from '@/components/messaging/MessageInput';
 import ConversationList from '@/components/messaging/ConversationList';
+import SessionsCompletedCard from '@/components/family/SessionsCompletedCard';
+import SessionHistoryModal from '@/components/family/SessionHistoryModal';
 
 export default function FamilyDashboard() {
   const [selectedAthleteId, setSelectedAthleteId] = useState(null);
@@ -24,6 +26,7 @@ export default function FamilyDashboard() {
   const [isSettling, setIsSettling] = useState(false);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showSessionHistory, setShowSessionHistory] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -186,6 +189,10 @@ export default function FamilyDashboard() {
     !selectedAthleteId || s.athlete_id === selectedAthleteId
   );
 
+  const completedSessions = filteredSessions.filter(s => 
+    s.status === 'completed' || s.status === 'verified'
+  ).sort((a, b) => new Date(b.scheduled_time) - new Date(a.scheduled_time));
+
   const upcomingSessions = filteredSessions.filter(s => 
     isFuture(new Date(s.scheduled_time)) && s.status !== 'cancelled'
   ).slice(0, 5);
@@ -314,6 +321,18 @@ export default function FamilyDashboard() {
                   })}
                 </div>
               )}
+            </motion.div>
+
+            {/* Sessions Completed */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+            >
+              <SessionsCompletedCard 
+                completedCount={completedSessions.length}
+                onClick={() => setShowSessionHistory(true)}
+              />
             </motion.div>
 
             {/* Upcoming Sessions */}
@@ -466,6 +485,15 @@ export default function FamilyDashboard() {
         </TabsContent>
       </Tabs>
       </main>
+
+      {/* Session History Modal */}
+      <SessionHistoryModal
+        isOpen={showSessionHistory}
+        onClose={() => setShowSessionHistory(false)}
+        sessions={completedSessions}
+        athletes={athletes}
+        coaches={coaches}
+      />
     </div>
   );
 }
