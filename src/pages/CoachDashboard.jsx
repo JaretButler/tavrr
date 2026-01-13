@@ -309,7 +309,6 @@ export default function CoachDashboard() {
           <div className="mb-6 flex flex-col gap-2 items-start">
             <TabsList className="flex-col h-auto items-start">
               <TabsTrigger value="dashboard" className="w-full justify-start">Instructor Dashboard</TabsTrigger>
-              <TabsTrigger value="payments" className="w-full justify-start">Payments</TabsTrigger>
             </TabsList>
             
             <Button
@@ -332,6 +331,12 @@ export default function CoachDashboard() {
                 </span>
               )}
             </Button>
+            <button
+              onClick={() => setActiveTab('payments')}
+              className="text-sm font-medium text-neutral-900 hover:text-[#0066CC] transition-colors"
+            >
+              Payments
+            </button>
           </div>
 
           <TabsContent value="dashboard">
