@@ -251,27 +251,24 @@ export default function CoachDashboard() {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex items-center justify-between mb-6">
-            <TabsList>
-              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-              <TabsTrigger value="messages" className="relative">
-                Messages
-                {unreadMessages.length > 0 && (
-                  <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
-                    {unreadMessages.length}
-                  </span>
-                )}
-              </TabsTrigger>
-            </TabsList>
-
+          <TabsList className="mb-6">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <Button
               variant="default"
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3]"
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] h-8 px-3 text-sm scale-[0.85]"
             >
               <Plus className="w-4 h-4" />
               <span>Schedule Session</span>
             </Button>
-          </div>
+            <TabsTrigger value="messages" className="relative">
+              Messages
+              {unreadMessages.length > 0 && (
+                <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
+                  {unreadMessages.length}
+                </span>
+              )}
+            </TabsTrigger>
+          </TabsList>
 
           <TabsContent value="dashboard">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
