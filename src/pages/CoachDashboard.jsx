@@ -140,27 +140,47 @@ export default function CoachDashboard() {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Revenue & Feed */}
+          {/* Left Column - Sessions & Feed */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Revenue Ticker */}
+            {/* Today's Sessions */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl border border-neutral-100 p-6"
             >
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-medium text-neutral-900">
+                  {isToday(selectedDate) ? "Today's Sessions" : format(selectedDate, 'EEEE, MMM d')}
+                </h2>
+                <span className="text-sm text-neutral-400">
+                  {selectedDateSessions.length} session{selectedDateSessions.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+
               {isLoading ? (
                 <div className="space-y-4">
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="h-12 w-48" />
-                  <Skeleton className="h-2 w-full" />
+                  {[1, 2].map(i => (
+                    <Skeleton key={i} className="h-40 w-full rounded-xl" />
+                  ))}
+                </div>
+              ) : selectedDateSessions.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
+                  <Calendar className="w-10 h-10 text-neutral-200 mx-auto mb-4" />
+                  <p className="text-neutral-500">No sessions scheduled</p>
                 </div>
               ) : (
-                <RevenueTicker
-                  todayVerified={todayVerifiedRevenue}
-                  todayProjected={todayProjectedRevenue}
-                  monthlyRecovered={monthlyRecovered}
-                  monthlyGoal={coach?.monthly_revenue_goal || 10000}
-                />
+                <div className="space-y-4">
+                  <AnimatePresence mode="popLayout">
+                    {selectedDateSessions.map(session => (
+                      <SessionCard
+                        key={session.id}
+                        session={session}
+                        athlete={athletes.find(a => a.id === session.athlete_id)}
+                        onManualOverride={handleManualOverride}
+                        onCancel={() => {}}
+                      />
+                    ))}
+                  </AnimatePresence>
+                </div>
               )}
             </motion.div>
 
@@ -168,7 +188,7 @@ export default function CoachDashboard() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
+              transition={{ delay: 0.1 }}
               className="bg-white rounded-2xl border border-neutral-100 p-6"
             >
               {isLoading ? (
@@ -191,69 +211,26 @@ export default function CoachDashboard() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
+              transition={{ delay: 0.2 }}
               className="bg-white rounded-2xl border border-neutral-100 p-6"
             >
               <HandshakeFeed handshakes={recentHandshakes} />
             </motion.div>
           </div>
 
-          {/* Right Column - Calendar & Sessions */}
+          {/* Right Column - Calendar */}
           <div className="lg:col-span-2 space-y-6">
             {/* Calendar */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              transition={{ delay: 0.3 }}
             >
               <TrainingCalendar
                 sessions={sessions}
                 selectedDate={selectedDate}
                 onDateSelect={setSelectedDate}
               />
-            </motion.div>
-
-            {/* Sessions for Selected Date */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-medium text-neutral-900">
-                  {isToday(selectedDate) ? "Today's Sessions" : format(selectedDate, 'EEEE, MMM d')}
-                </h2>
-                <span className="text-sm text-neutral-400">
-                  {selectedDateSessions.length} session{selectedDateSessions.length !== 1 ? 's' : ''}
-                </span>
-              </div>
-
-              {isLoading ? (
-                <div className="space-y-4">
-                  {[1, 2, 3].map(i => (
-                    <Skeleton key={i} className="h-40 w-full rounded-xl" />
-                  ))}
-                </div>
-              ) : selectedDateSessions.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
-                  <Calendar className="w-10 h-10 text-neutral-200 mx-auto mb-4" />
-                  <p className="text-neutral-500">No sessions scheduled</p>
-                </div>
-              ) : (
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <AnimatePresence mode="popLayout">
-                    {selectedDateSessions.map(session => (
-                      <SessionCard
-                        key={session.id}
-                        session={session}
-                        athlete={athletes.find(a => a.id === session.athlete_id)}
-                        onManualOverride={handleManualOverride}
-                        onCancel={() => {}}
-                      />
-                    ))}
-                  </AnimatePresence>
-                </div>
-              )}
             </motion.div>
           </div>
         </div>
