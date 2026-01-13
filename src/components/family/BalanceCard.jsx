@@ -18,7 +18,7 @@ export default function BalanceCard({ balance = 0, onSettle, isSettling, biometr
       <div className="flex items-start justify-between mb-4">
         <div>
           <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
-            Account Balance
+            Money Owed
           </span>
           <div className="flex items-baseline gap-2 mt-2">
             <span className={`text-4xl font-light tracking-tight ${hasBalance ? 'text-amber-700' : 'text-neutral-900'}`}>
