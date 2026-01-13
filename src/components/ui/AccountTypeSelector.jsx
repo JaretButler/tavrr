@@ -26,8 +26,11 @@ export default function AccountTypeSelector({ onSelect }) {
           <h1 className="text-3xl font-light text-neutral-900 mb-3 tracking-tight">
             Welcome to Tavrr
           </h1>
-          <p className="text-neutral-400">
-            How will you be using the platform?
+          <p className="text-lg text-neutral-600 mb-2">
+            Instant payments at every handshake
+          </p>
+          <p className="text-sm text-neutral-400">
+            Automated billing and revenue recovery for coaches. Simple, structured payments for families.
           </p>
         </div>
 
@@ -45,7 +48,7 @@ export default function AccountTypeSelector({ onSelect }) {
               <div>
                 <h2 className="text-lg font-medium text-neutral-900 mb-1">I'm a Coach</h2>
                 <p className="text-sm text-neutral-500">
-                  Manage your training business, track revenue recovery, and automate client billing with proximity verification.
+                  Get paid instantly. Automate billing, track revenue recovery, and grow your business with zero payment friction.
                 </p>
               </div>
             </div>
@@ -64,7 +67,7 @@ export default function AccountTypeSelector({ onSelect }) {
               <div>
                 <h2 className="text-lg font-medium text-neutral-900 mb-1">I'm a Family</h2>
                 <p className="text-sm text-neutral-500">
-                  Manage your children's training sessions, view schedules, and handle unified family billing in one place.
+                  No more invoices or awkward payments. Track sessions, manage schedules, and pay automatically in one simple app.
                 </p>
               </div>
             </div>
