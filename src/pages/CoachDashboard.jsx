@@ -328,14 +328,6 @@ export default function CoachDashboard() {
                 <Plus className="w-4 h-4" />
                 <span>Schedule Session</span>
               </Button>
-              <Button
-                variant="default"
-                onClick={() => setActiveTab('messages')}
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3]"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Message</span>
-              </Button>
             </div>
           </div>
 
