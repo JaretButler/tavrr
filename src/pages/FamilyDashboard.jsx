@@ -97,6 +97,12 @@ export default function FamilyDashboard() {
   const isLocked = (family?.current_balance || 0) > 0;
   const isLoading = familyLoading || athletesLoading || sessionsLoading;
 
+  // Find which coach is owed money (from most recent unpaid session)
+  const owedCoach = sessions
+    .filter(s => s.status === 'verified' || s.status === 'completed')
+    .sort((a, b) => new Date(b.scheduled_time) - new Date(a.scheduled_time))[0]?.coach_id;
+  const coachName = coaches.find(c => c.id === owedCoach)?.display_name;
+
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* Header */}
@@ -148,6 +154,7 @@ export default function FamilyDashboard() {
                   isSettling={isSettling}
                   biometricEnabled={family?.biometric_enabled}
                   paymentMethods={family?.payment_methods || []}
+                  coachName={coachName}
                 />
               )}
             </motion.div>

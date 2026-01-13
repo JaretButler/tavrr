@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function BalanceCard({ balance = 0, onSettle, isSettling, biometricEnabled, paymentMethods = [] }) {
+export default function BalanceCard({ balance = 0, onSettle, isSettling, biometricEnabled, paymentMethods = [], coachName }) {
   const hasBalance = balance > 0;
   const hasPaymentMethod = paymentMethods.length > 0;
 
@@ -18,14 +18,17 @@ export default function BalanceCard({ balance = 0, onSettle, isSettling, biometr
       <div className="flex items-start justify-between mb-4">
         <div>
           <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
-            Money Owed
+            Payment Owed
           </span>
-          <div className="flex items-baseline gap-2 mt-2">
+          <div className="flex items-baseline gap-3 mt-2">
             <span className={`text-4xl font-light tracking-tight ${hasBalance ? 'text-amber-700' : 'text-neutral-900'}`}>
               ${balance.toFixed(2)}
             </span>
-            {hasBalance && (
-              <span className="text-sm text-amber-600 font-medium">due</span>
+            {hasBalance && coachName && (
+              <div className="flex flex-col">
+                <span className="text-xs text-neutral-400 uppercase tracking-wider">Which Instructor</span>
+                <span className="text-sm text-amber-600 font-medium">{coachName}</span>
+              </div>
             )}
           </div>
         </div>
