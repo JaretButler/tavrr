@@ -53,7 +53,7 @@ export default function AthleteSwitcher({ athletes = [], selectedAthlete, onSele
           <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
             <Plus className="w-4 h-4" />
           </div>
-          <span className="text-sm font-medium">Add Athlete</span>
+          <span className="text-sm font-medium">Add Person</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
