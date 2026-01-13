@@ -222,26 +222,13 @@ export default function FamilyDashboard() {
             </motion.div>
           </div>
 
-          {/* Right Column - Calendar & Sessions */}
+          {/* Right Column - Sessions & Calendar */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Calendar */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <TrainingCalendar
-                sessions={filteredSessions}
-                selectedDate={selectedDate}
-                onDateSelect={setSelectedDate}
-              />
-            </motion.div>
-
             {/* Sessions for Selected Date */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.2 }}
             >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-medium text-neutral-900">
@@ -280,6 +267,19 @@ export default function FamilyDashboard() {
                   </AnimatePresence>
                 </div>
               )}
+            </motion.div>
+
+            {/* Calendar */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <TrainingCalendar
+                sessions={filteredSessions}
+                selectedDate={selectedDate}
+                onDateSelect={setSelectedDate}
+              />
             </motion.div>
           </div>
         </div>
