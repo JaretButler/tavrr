@@ -23,12 +23,12 @@ export default function TrainingCalendar({ sessions = [], onDateSelect, selected
 
   const getSessionIndicator = (daySessions) => {
     if (daySessions.length === 0) return null;
-    const hasVerified = daySessions.some(s => s.status === 'verified');
-    const hasPending = daySessions.some(s => s.rsvp_status === 'pending');
-    
-    if (hasVerified) return 'bg-emerald-500';
-    if (hasPending) return 'bg-amber-400';
-    return 'bg-[#0066CC]';
+    const hasConfirmed = daySessions.some(s => s.rsvp_status === 'confirmed');
+    const hasNotConfirmed = daySessions.some(s => s.rsvp_status !== 'confirmed');
+
+    if (hasConfirmed) return 'bg-emerald-500';
+    if (hasNotConfirmed) return 'bg-red-500';
+    return 'bg-emerald-500';
   };
 
   return (
@@ -42,7 +42,6 @@ export default function TrainingCalendar({ sessions = [], onDateSelect, selected
             </div>
             <div>
               <h3 className="font-medium text-neutral-900">Training Calendar</h3>
-              <p className="text-xs text-neutral-400">Tavrr-verified sessions only</p>
             </div>
           </div>
           
@@ -133,15 +132,11 @@ export default function TrainingCalendar({ sessions = [], onDateSelect, selected
       <div className="px-6 py-3 border-t border-neutral-100 flex items-center gap-4">
         <div className="flex items-center gap-1.5">
           <div className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span className="text-xs text-neutral-500">Verified</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-[#0066CC]" />
           <span className="text-xs text-neutral-500">Confirmed</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-amber-400" />
-          <span className="text-xs text-neutral-500">Pending RSVP</span>
+          <div className="w-2 h-2 rounded-full bg-red-500" />
+          <span className="text-xs text-neutral-500">Not Confirmed</span>
         </div>
       </div>
     </div>
