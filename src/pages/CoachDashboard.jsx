@@ -306,33 +306,38 @@ export default function CoachDashboard() {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="dashboard">Instructor Dashboard</TabsTrigger>
-            <Button
-              variant="default"
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] h-8 px-3 text-sm scale-[0.85]"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Schedule Session</span>
-            </Button>
-            <Button
-              variant="default"
-              onClick={() => setActiveTab('messages')}
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] h-8 px-3 text-sm scale-[0.85]"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>Message</span>
-            </Button>
-            <TabsTrigger value="messages" className="relative">
-              Messages
-              {unreadMessages.length > 0 && (
-                <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
-                  {unreadMessages.length}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="payments">Payments</TabsTrigger>
-          </TabsList>
+          <div className="mb-6 space-y-3">
+            <TabsList>
+              <TabsTrigger value="dashboard">Instructor Dashboard</TabsTrigger>
+              <TabsTrigger value="messages" className="relative">
+                Messages
+                {unreadMessages.length > 0 && (
+                  <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
+                    {unreadMessages.length}
+                  </span>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="payments">Payments</TabsTrigger>
+            </TabsList>
+            
+            <div className="flex gap-2">
+              <Button
+                variant="default"
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3]"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Schedule Session</span>
+              </Button>
+              <Button
+                variant="default"
+                onClick={() => setActiveTab('messages')}
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3]"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Message</span>
+              </Button>
+            </div>
+          </div>
 
           <TabsContent value="dashboard">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
