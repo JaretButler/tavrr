@@ -123,7 +123,7 @@ export default function CoachDashboard() {
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/f390a923b_tfA4gvqQ0K1ptroztEoWt.png"
                 alt="Tavrr"
-                className="h-10"
+                className="h-[2.8rem]"
               />
               <div className="border-l border-neutral-200 pl-4">
                 <h1 className="text-xl font-medium text-neutral-900">Instructor Hub</h1>
