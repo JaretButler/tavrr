@@ -159,76 +159,11 @@ export default function FamilyDashboard() {
               )}
             </motion.div>
 
-            {/* Upcoming Sessions */}
+            {/* Today's Training */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl border border-neutral-100 p-6"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
-                  Upcoming Sessions
-                </span>
-                <span className="text-xs text-neutral-400">
-                  {upcomingSessions.length} scheduled
-                </span>
-              </div>
-
-              {isLoading ? (
-                <div className="space-y-3">
-                  {[1, 2, 3].map(i => (
-                    <Skeleton key={i} className="h-16 w-full rounded-lg" />
-                  ))}
-                </div>
-              ) : upcomingSessions.length === 0 ? (
-                <p className="text-sm text-neutral-400 text-center py-8">
-                  No upcoming sessions
-                </p>
-              ) : (
-                <div className="space-y-3">
-                  {upcomingSessions.map(session => {
-                    const athlete = athletes.find(a => a.id === session.athlete_id);
-                    const coach = coaches.find(c => c.id === session.coach_id);
-                    const sessionDate = new Date(session.scheduled_time);
-
-                    return (
-                      <div 
-                        key={session.id}
-                        className="flex items-center gap-3 p-3 bg-neutral-50 rounded-xl"
-                      >
-                        <div 
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-medium"
-                          style={{ backgroundColor: athlete?.avatar_color || '#6B7280' }}
-                        >
-                          {athlete?.name?.charAt(0)}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-neutral-900 truncate">
-                            {athlete?.name}
-                          </p>
-                          <p className="text-xs text-neutral-400">
-                            {isToday(sessionDate) ? 'Today' : format(sessionDate, 'EEE, MMM d')} · {format(sessionDate, 'h:mm a')}
-                          </p>
-                        </div>
-                        <span className="text-sm font-medium text-neutral-900">
-                          ${session.rate}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </motion.div>
-          </div>
-
-          {/* Right Column - Sessions & Calendar */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Sessions for Selected Date */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
             >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-medium text-neutral-900">
@@ -247,33 +182,98 @@ export default function FamilyDashboard() {
                   <p className="text-neutral-400">No training scheduled</p>
                 </div>
               ) : (
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <AnimatePresence mode="popLayout">
-                    {selectedDateSessions.map(session => {
-                      const athlete = athletes.find(a => a.id === session.athlete_id);
-                      const coach = coaches.find(c => c.id === session.coach_id);
+                <div className="space-y-4">
+                  {selectedDateSessions.map(session => {
+                    const athlete = athletes.find(a => a.id === session.athlete_id);
+                    const coach = coaches.find(c => c.id === session.coach_id);
 
-                      return (
-                        <FamilySessionCard
-                          key={session.id}
-                          session={session}
-                          athlete={athlete}
-                          coach={coach}
-                          onRsvp={(sessionId, status) => rsvpMutation.mutate({ sessionId, status })}
-                          isLocked={isLocked}
-                        />
-                      );
-                    })}
-                  </AnimatePresence>
+                    return (
+                      <FamilySessionCard
+                        key={session.id}
+                        session={session}
+                        athlete={athlete}
+                        coach={coach}
+                        onRsvp={(sessionId, status) => rsvpMutation.mutate({ sessionId, status })}
+                        isLocked={isLocked}
+                      />
+                    );
+                  })}
                 </div>
               )}
             </motion.div>
 
+            {/* Upcoming Sessions */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
+                  Upcoming Sessions
+                </span>
+                <span className="text-xs text-neutral-400">
+                  {upcomingSessions.length} scheduled
+                </span>
+              </div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white rounded-2xl border border-neutral-100 p-6"
+              >
+                {isLoading ? (
+                  <div className="space-y-3">
+                    {[1, 2, 3].map(i => (
+                      <Skeleton key={i} className="h-16 w-full rounded-lg" />
+                    ))}
+                  </div>
+                ) : upcomingSessions.length === 0 ? (
+                  <p className="text-sm text-neutral-400 text-center py-8">
+                    No upcoming sessions
+                  </p>
+                ) : (
+                  <div className="space-y-3">
+                    {upcomingSessions.map(session => {
+                      const athlete = athletes.find(a => a.id === session.athlete_id);
+                      const coach = coaches.find(c => c.id === session.coach_id);
+                      const sessionDate = new Date(session.scheduled_time);
+
+                      return (
+                        <div 
+                          key={session.id}
+                          className="flex items-center gap-3 p-3 bg-neutral-50 rounded-xl"
+                        >
+                          <div 
+                            className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-medium"
+                            style={{ backgroundColor: athlete?.avatar_color || '#6B7280' }}
+                          >
+                            {athlete?.name?.charAt(0)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-neutral-900 truncate">
+                              {athlete?.name}
+                            </p>
+                            <p className="text-xs text-neutral-400">
+                              {isToday(sessionDate) ? 'Today' : format(sessionDate, 'EEE, MMM d')} · {format(sessionDate, 'h:mm a')}
+                            </p>
+                          </div>
+                          <span className="text-sm font-medium text-neutral-900">
+                            ${session.rate}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Right Column - Calendar */}
+          <div className="lg:col-span-2 space-y-6">
             {/* Calendar */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.2 }}
             >
               <TrainingCalendar
                 sessions={filteredSessions}
