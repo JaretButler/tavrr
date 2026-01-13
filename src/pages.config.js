@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Messages from './pages/Messages';
 import PaymentSettings from './pages/PaymentSettings';
 import CoachOnboarding from './pages/CoachOnboarding';
+import FamilyOnboarding from './pages/FamilyOnboarding';
 import __Layout from './Layout.jsx';
 
 
@@ -16,6 +17,7 @@ export const PAGES = {
     "Messages": Messages,
     "PaymentSettings": PaymentSettings,
     "CoachOnboarding": CoachOnboarding,
+    "FamilyOnboarding": FamilyOnboarding,
 }
 
 export const pagesConfig = {
