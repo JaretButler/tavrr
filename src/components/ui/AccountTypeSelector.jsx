@@ -11,6 +11,11 @@ export default function AccountTypeSelector({ onSelect }) {
         className="max-w-lg w-full"
       >
         <div className="text-center mb-12">
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/f390a923b_tfA4gvqQ0K1ptroztEoWt.png"
+            alt="Tavrr"
+            className="h-24 mx-auto mb-8"
+          />
           <h1 className="text-3xl font-light text-neutral-900 mb-3 tracking-tight">
             Welcome to Tavrr
           </h1>

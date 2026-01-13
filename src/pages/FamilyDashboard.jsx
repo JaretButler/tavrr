@@ -103,12 +103,21 @@ export default function FamilyDashboard() {
       <header className="bg-white border-b border-neutral-100 sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <AthleteSwitcher
-              athletes={athletes}
-              selectedAthlete={selectedAthleteId}
-              onSelect={setSelectedAthleteId}
-              onAddAthlete={() => {}}
-            />
+            <div className="flex items-center gap-4">
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/f390a923b_tfA4gvqQ0K1ptroztEoWt.png"
+                alt="Tavrr"
+                className="h-10"
+              />
+              <div className="border-l border-neutral-200 pl-4">
+                <AthleteSwitcher
+                  athletes={athletes}
+                  selectedAthlete={selectedAthleteId}
+                  onSelect={setSelectedAthleteId}
+                  onAddAthlete={() => {}}
+                />
+              </div>
+            </div>
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="w-5 h-5 text-neutral-500" />
