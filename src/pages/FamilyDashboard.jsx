@@ -159,49 +159,6 @@ export default function FamilyDashboard() {
               )}
             </motion.div>
 
-            {/* Today's Training */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-medium text-neutral-900">
-                  {isToday(selectedDate) ? "Today's Training" : format(selectedDate, 'EEEE, MMM d')}
-                </h2>
-              </div>
-
-              {isLoading ? (
-                <div className="space-y-4">
-                  {[1, 2].map(i => (
-                    <Skeleton key={i} className="h-48 w-full rounded-xl" />
-                  ))}
-                </div>
-              ) : selectedDateSessions.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
-                  <p className="text-neutral-400">No training scheduled</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {selectedDateSessions.map(session => {
-                    const athlete = athletes.find(a => a.id === session.athlete_id);
-                    const coach = coaches.find(c => c.id === session.coach_id);
-
-                    return (
-                      <FamilySessionCard
-                        key={session.id}
-                        session={session}
-                        athlete={athlete}
-                        coach={coach}
-                        onRsvp={(sessionId, status) => rsvpMutation.mutate({ sessionId, status })}
-                        isLocked={isLocked}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-            </motion.div>
-
             {/* Upcoming Sessions */}
             <div>
               <div className="flex items-center justify-between mb-3">
@@ -267,8 +224,51 @@ export default function FamilyDashboard() {
             </div>
           </div>
 
-          {/* Right Column - Calendar */}
+          {/* Right Column - Today's Training & Calendar */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Today's Training */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-medium text-neutral-900">
+                  {isToday(selectedDate) ? "Today's Training" : format(selectedDate, 'EEEE, MMM d')}
+                </h2>
+              </div>
+
+              {isLoading ? (
+                <div className="space-y-4">
+                  {[1, 2].map(i => (
+                    <Skeleton key={i} className="h-48 w-full rounded-xl" />
+                  ))}
+                </div>
+              ) : selectedDateSessions.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
+                  <p className="text-neutral-400">No training scheduled</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {selectedDateSessions.map(session => {
+                    const athlete = athletes.find(a => a.id === session.athlete_id);
+                    const coach = coaches.find(c => c.id === session.coach_id);
+
+                    return (
+                      <FamilySessionCard
+                        key={session.id}
+                        session={session}
+                        athlete={athlete}
+                        coach={coach}
+                        onRsvp={(sessionId, status) => rsvpMutation.mutate({ sessionId, status })}
+                        isLocked={isLocked}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </motion.div>
+
             {/* Calendar */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
