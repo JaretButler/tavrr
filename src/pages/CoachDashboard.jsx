@@ -306,34 +306,32 @@ export default function CoachDashboard() {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="mb-6 space-y-3">
-            <TabsList>
-              <TabsTrigger value="dashboard">Instructor Dashboard</TabsTrigger>
-              <TabsTrigger value="payments">Payments</TabsTrigger>
+          <div className="mb-6 flex flex-col gap-2 items-start">
+            <TabsList className="flex-col h-auto items-start">
+              <TabsTrigger value="dashboard" className="w-full justify-start">Instructor Dashboard</TabsTrigger>
+              <TabsTrigger value="payments" className="w-full justify-start">Payments</TabsTrigger>
             </TabsList>
             
-            <div className="flex gap-2">
-              <Button
-                variant="default"
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3]"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Schedule Session</span>
-              </Button>
-              <Button
-                variant="default"
-                onClick={() => setActiveTab('messages')}
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Messages</span>
-                {unreadMessages.length > 0 && (
-                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
-                    {unreadMessages.length}
-                  </span>
-                )}
-              </Button>
-            </div>
+            <Button
+              variant="default"
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] w-full justify-start"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Schedule Session</span>
+            </Button>
+            <Button
+              variant="default"
+              onClick={() => setActiveTab('messages')}
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative w-full justify-start"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Messages</span>
+              {unreadMessages.length > 0 && (
+                <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
+                  {unreadMessages.length}
+                </span>
+              )}
+            </Button>
           </div>
 
           <TabsContent value="dashboard">
