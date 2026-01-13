@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, isToday, startOfMonth, endOfMonth, isSameDay } from 'date-fns';
-import { Calendar, Settings, Bell, RefreshCw, Users, MessageCircle } from 'lucide-react';
+import { Calendar, Settings, Bell, RefreshCw, Users, MessageCircle, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
@@ -251,17 +251,27 @@ export default function CoachDashboard() {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="messages" className="relative">
-              Messages
-              {unreadMessages.length > 0 && (
-                <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
-                  {unreadMessages.length}
-                </span>
-              )}
-            </TabsTrigger>
-          </TabsList>
+          <div className="flex items-center justify-between mb-6">
+            <TabsList>
+              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+              <TabsTrigger value="messages" className="relative">
+                Messages
+                {unreadMessages.length > 0 && (
+                  <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
+                    {unreadMessages.length}
+                  </span>
+                )}
+              </TabsTrigger>
+            </TabsList>
+
+            <Button
+              variant="default"
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3]"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Schedule Session</span>
+            </Button>
+          </div>
 
           <TabsContent value="dashboard">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
