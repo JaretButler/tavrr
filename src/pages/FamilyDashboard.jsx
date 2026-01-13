@@ -19,6 +19,7 @@ import MessageInput from '@/components/messaging/MessageInput';
 import ConversationList from '@/components/messaging/ConversationList';
 import SessionsCompletedCard from '@/components/family/SessionsCompletedCard';
 import SessionHistoryModal from '@/components/family/SessionHistoryModal';
+import NewMessageModal from '@/components/messaging/NewMessageModal';
 
 export default function FamilyDashboard() {
   const [selectedAthleteId, setSelectedAthleteId] = useState(null);
@@ -27,6 +28,7 @@ export default function FamilyDashboard() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showSessionHistory, setShowSessionHistory] = useState(false);
+  const [showNewMessage, setShowNewMessage] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -173,6 +175,22 @@ export default function FamilyDashboard() {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     },
   });
+
+  const handleNewConversation = (coach, athlete) => {
+    const conversationId = `conv_${family.id}_${coach.id}_${athlete.id}_${Date.now()}`;
+    const newConversation = {
+      conversation_id: conversationId,
+      name: coach.display_name || 'Coach',
+      avatarColor: '#6B7280',
+      lastMessage: '',
+      lastMessageDate: new Date().toISOString(),
+      unreadCount: 0,
+      otherPartyId: coach.id,
+      athleteId: athlete.id,
+    };
+    setSelectedConversation(newConversation);
+    setActiveTab('messages');
+  };
 
   const sendPaymentReminderMutation = useMutation({
     mutationFn: async () => {
@@ -462,6 +480,15 @@ export default function FamilyDashboard() {
             {/* Conversations List */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-2xl border border-neutral-100 p-4">
+                <div className="mb-4">
+                  <Button
+                    onClick={() => setShowNewMessage(true)}
+                    className="w-full bg-[#0066CC] hover:bg-[#0052A3]"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Message
+                  </Button>
+                </div>
                 <ConversationList
                   conversations={conversations}
                   selectedConversation={selectedConversation}
@@ -532,6 +559,15 @@ export default function FamilyDashboard() {
         sessions={completedSessions}
         athletes={athletes}
         coaches={coaches}
+      />
+
+      {/* New Message Modal */}
+      <NewMessageModal
+        isOpen={showNewMessage}
+        onClose={() => setShowNewMessage(false)}
+        coaches={coaches}
+        athletes={athletes}
+        onSelect={handleNewConversation}
       />
     </div>
   );
