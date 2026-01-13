@@ -306,45 +306,45 @@ export default function CoachDashboard() {
 
       <main className="max-w-7xl mx-auto px-6 py-2">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="mb-6 flex flex-col gap-2 items-start">
-            <TabsList className="flex-col h-auto items-start">
-              <TabsTrigger value="dashboard" className="w-full justify-start">Instructor Dashboard</TabsTrigger>
-            </TabsList>
-            
-            <Button
-              variant="default"
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] w-1/2 justify-start"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Schedule Session</span>
-            </Button>
-            <Button
-              variant="default"
-              onClick={() => setActiveTab('messages')}
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative w-1/2 justify-start"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>Messages</span>
-              {unreadMessages.length > 0 && (
-                <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
-                  {unreadMessages.length}
-                </span>
-              )}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setActiveTab('payments')}
-              className="w-1/2 justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
-            >
-              Payment History
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setActiveTab('sessionHistory')}
-              className="w-1/2 justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
-            >
-              Session History
-            </Button>
+          <div className="mb-6 flex gap-6">
+            <div className="flex flex-col gap-2">
+              <Button
+                variant="default"
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Schedule Session</span>
+              </Button>
+              <Button
+                variant="default"
+                onClick={() => setActiveTab('messages')}
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Messages</span>
+                {unreadMessages.length > 0 && (
+                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
+                    {unreadMessages.length}
+                  </span>
+                )}
+              </Button>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setActiveTab('payments')}
+                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
+              >
+                Payment History
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setActiveTab('sessionHistory')}
+                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
+              >
+                Session History
+              </Button>
+            </div>
           </div>
 
           <TabsContent value="dashboard">
