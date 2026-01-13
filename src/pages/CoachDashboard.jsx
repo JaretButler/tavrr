@@ -164,6 +164,29 @@ export default function CoachDashboard() {
               )}
             </motion.div>
 
+            {/* Revenue Ticker */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="bg-white rounded-2xl border border-neutral-100 p-6"
+            >
+              {isLoading ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-12 w-48" />
+                  <Skeleton className="h-2 w-full" />
+                </div>
+              ) : (
+                <RevenueTicker
+                  todayVerified={todayVerifiedRevenue}
+                  todayProjected={todayProjectedRevenue}
+                  monthlyRecovered={monthlyRecovered}
+                  monthlyGoal={coach?.monthly_revenue_goal || 10000}
+                />
+              )}
+            </motion.div>
+
             {/* Handshake Feed */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
