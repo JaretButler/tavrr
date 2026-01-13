@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,16 +8,23 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import AthleteSwitcher from '@/components/family/AthleteSwitcher';
 import BalanceCard from '@/components/family/BalanceCard';
 import FamilySessionCard from '@/components/family/FamilySessionCard';
 import TrainingCalendar from '@/components/calendar/TrainingCalendar';
+import MessageBubble from '@/components/messaging/MessageBubble';
+import MessageInput from '@/components/messaging/MessageInput';
+import ConversationList from '@/components/messaging/ConversationList';
 
 export default function FamilyDashboard() {
   const [selectedAthleteId, setSelectedAthleteId] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isSettling, setIsSettling] = useState(false);
+  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
   const { data: user } = useQuery({
@@ -49,6 +56,12 @@ export default function FamilyDashboard() {
     queryFn: () => base44.entities.Coach.list(),
   });
 
+  const { data: allMessages = [], isLoading: messagesLoading } = useQuery({
+    queryKey: ['messages', family?.id],
+    queryFn: () => base44.entities.Message.list('-created_date', 500),
+    enabled: !!family?.id,
+  });
+
   // Get unread messages count
   const { data: unreadMessages = [] } = useQuery({
     queryKey: ['unreadMessages', family?.id],
@@ -63,13 +76,22 @@ export default function FamilyDashboard() {
     }
   }, [athletes, selectedAthleteId]);
 
-  // Subscribe to real-time session updates
+  // Subscribe to real-time updates
   useEffect(() => {
-    const unsubscribe = base44.entities.Session.subscribe((event) => {
+    const unsubscribeSession = base44.entities.Session.subscribe((event) => {
       queryClient.invalidateQueries({ queryKey: ['familySessions'] });
     });
-    return unsubscribe;
-  }, [queryClient]);
+    const unsubscribeMessage = base44.entities.Message.subscribe((event) => {
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
+      if (selectedConversation && event.data.conversation_id === selectedConversation.conversation_id) {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+    return () => {
+      unsubscribeSession();
+      unsubscribeMessage();
+    };
+  }, [queryClient, selectedConversation]);
 
   const rsvpMutation = useMutation({
     mutationFn: async ({ sessionId, status }) => {
@@ -89,6 +111,75 @@ export default function FamilyDashboard() {
       setIsSettling(false);
     }, 2000);
   };
+
+  // Build conversations from messages
+  const conversations = React.useMemo(() => {
+    if (!allMessages.length || !family?.id) return [];
+    const convMap = new Map();
+    allMessages.forEach(msg => {
+      const isOwnMessage = msg.sender_id === family?.id;
+      const otherPartyId = isOwnMessage ? msg.receiver_id : msg.sender_id;
+      const convId = msg.conversation_id;
+      if (!convMap.has(convId)) {
+        const coach = coaches.find(c => c.id === otherPartyId);
+        convMap.set(convId, {
+          conversation_id: convId,
+          name: coach?.display_name || 'Coach',
+          avatarColor: '#6B7280',
+          lastMessage: msg.content,
+          lastMessageDate: msg.created_date,
+          unreadCount: 0,
+          otherPartyId,
+          athleteId: msg.athlete_id,
+        });
+      }
+      const conv = convMap.get(convId);
+      if (!isOwnMessage && !msg.read) conv.unreadCount++;
+    });
+    return Array.from(convMap.values()).sort((a, b) => 
+      new Date(b.lastMessageDate) - new Date(a.lastMessageDate)
+    );
+  }, [allMessages, family, coaches]);
+
+  const conversationMessages = selectedConversation
+    ? allMessages.filter(m => m.conversation_id === selectedConversation.conversation_id).reverse()
+    : [];
+
+  useEffect(() => {
+    if (selectedConversation) {
+      const unreadMsgs = conversationMessages.filter(m => !m.read && m.sender_type === 'coach');
+      unreadMsgs.forEach(msg => base44.entities.Message.update(msg.id, { read: true }));
+    }
+  }, [selectedConversation, conversationMessages]);
+
+  const sendMessageMutation = useMutation({
+    mutationFn: async ({ content, messageType }) => {
+      await base44.entities.Message.create({
+        conversation_id: selectedConversation.conversation_id,
+        sender_id: family?.id,
+        sender_type: 'family',
+        receiver_id: selectedConversation.otherPartyId,
+        receiver_type: 'coach',
+        content,
+        message_type: messageType,
+        athlete_id: selectedConversation.athleteId,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    },
+  });
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [conversationMessages]);
+
+  useEffect(() => {
+    if (conversations.length > 0 && !selectedConversation) {
+      setSelectedConversation(conversations[0]);
+    }
+  }, [conversations]);
 
   // Filter sessions
   const filteredSessions = sessions.filter(s => 
@@ -134,14 +225,6 @@ export default function FamilyDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Link to={createPageUrl('Messages')}>
-                <Button variant="ghost" size="icon" className="relative">
-                  <MessageCircle className="w-5 h-5 text-neutral-500" />
-                  {unreadMessages.length > 0 && (
-                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#0066CC] rounded-full" />
-                  )}
-                </Button>
-              </Link>
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="w-5 h-5 text-neutral-500" />
               </Button>
@@ -154,7 +237,21 @@ export default function FamilyDashboard() {
       </header>
 
       <main className="max-w-6xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="mb-6">
+            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+            <TabsTrigger value="messages" className="relative">
+              Messages
+              {unreadMessages.length > 0 && (
+                <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
+                  {unreadMessages.length}
+                </span>
+              )}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="dashboard">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Balance, Today's Training & Upcoming */}
           <div className="lg:col-span-1 space-y-6">
             {/* Balance Card */}
@@ -298,8 +395,76 @@ export default function FamilyDashboard() {
                 onDateSelect={setSelectedDate}
               />
             </motion.div>
+            </div>
           </div>
-        </div>
+        </TabsContent>
+
+        <TabsContent value="messages">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Conversations List */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-2xl border border-neutral-100 p-4">
+                <ConversationList
+                  conversations={conversations}
+                  selectedConversation={selectedConversation}
+                  onSelect={setSelectedConversation}
+                  isLoading={messagesLoading}
+                />
+              </div>
+            </div>
+
+            {/* Chat Area */}
+            <div className="lg:col-span-2">
+              {selectedConversation ? (
+                <div className="bg-white rounded-2xl border border-neutral-100 overflow-hidden flex flex-col h-[calc(100vh-16rem)]">
+                  {/* Chat Header */}
+                  <div className="border-b border-neutral-100 px-6 py-4 shrink-0">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white font-medium text-sm"
+                        style={{ backgroundColor: selectedConversation.avatarColor }}
+                      >
+                        {selectedConversation.name?.charAt(0)}
+                      </div>
+                      <div>
+                        <h2 className="text-sm font-medium text-neutral-900">
+                          {selectedConversation.name}
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Messages */}
+                  <div className="flex-1 overflow-y-auto p-6">
+                    {conversationMessages.map((message) => (
+                      <MessageBubble
+                        key={message.id}
+                        message={message}
+                        isOwn={message.sender_id === family?.id}
+                      />
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </div>
+
+                  {/* Message Input */}
+                  <MessageInput
+                    onSend={(data) => sendMessageMutation.mutate(data)}
+                    disabled={sendMessageMutation.isPending}
+                    isCoach={false}
+                  />
+                </div>
+              ) : (
+                <div className="bg-white rounded-2xl border border-neutral-100 flex items-center justify-center h-[calc(100vh-16rem)]">
+                  <div className="text-center">
+                    <MessageCircle className="w-16 h-16 text-neutral-200 mx-auto mb-4" />
+                    <p className="text-neutral-400">Select a conversation to start messaging</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
       </main>
     </div>
   );
