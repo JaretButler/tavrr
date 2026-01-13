@@ -534,6 +534,58 @@ export default function CoachDashboard() {
             />
           </div>
         </TabsContent>
+
+        <TabsContent value="sessionHistory">
+          <div className="max-w-4xl">
+            <div className="mb-6">
+              <h2 className="text-xl font-medium text-neutral-900 mb-2">Session History</h2>
+              <p className="text-sm text-neutral-500">View all your previous sessions</p>
+            </div>
+
+            <div className="space-y-4">
+              {sessionsLoading ? (
+                <div className="space-y-4">
+                  {[1, 2, 3].map(i => (
+                    <Skeleton key={i} className="h-24 w-full rounded-xl" />
+                  ))}
+                </div>
+              ) : sessions.length === 0 ? (
+                <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
+                  <Calendar className="w-10 h-10 text-neutral-200 mx-auto mb-4" />
+                  <p className="text-neutral-500">No sessions found</p>
+                </div>
+              ) : (
+                sessions.map(session => (
+                  <div key={session.id} className="bg-white rounded-2xl border border-neutral-100 p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="font-medium text-neutral-900">
+                            {athletes.find(a => a.id === session.athlete_id)?.name || 'Athlete'}
+                          </h3>
+                          <span className={`px-2 py-1 rounded-lg text-xs font-medium ${
+                            session.status === 'completed' ? 'bg-green-100 text-green-700' :
+                            session.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                            session.status === 'verified' ? 'bg-blue-100 text-blue-700' :
+                            'bg-neutral-100 text-neutral-700'
+                          }`}>
+                            {session.status}
+                          </span>
+                        </div>
+                        <p className="text-sm text-neutral-500">
+                          {format(new Date(session.scheduled_time), 'EEEE, MMMM d, yyyy • h:mm a')}
+                        </p>
+                        <p className="text-sm text-neutral-500 mt-1">
+                          {session.facility_name} • {session.duration_minutes} min • ${session.rate}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </TabsContent>
         </Tabs>
         </main>
 
