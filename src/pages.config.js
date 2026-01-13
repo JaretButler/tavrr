@@ -4,6 +4,7 @@ import FamilyDashboard from './pages/FamilyDashboard';
 import Home from './pages/Home';
 import Messages from './pages/Messages';
 import PaymentSettings from './pages/PaymentSettings';
+import CoachOnboarding from './pages/CoachOnboarding';
 import __Layout from './Layout.jsx';
 
 
@@ -14,6 +15,7 @@ export const PAGES = {
     "Home": Home,
     "Messages": Messages,
     "PaymentSettings": PaymentSettings,
+    "CoachOnboarding": CoachOnboarding,
 }
 
 export const pagesConfig = {
