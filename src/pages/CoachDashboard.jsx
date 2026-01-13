@@ -18,6 +18,7 @@ import TrainingCalendar from '@/components/calendar/TrainingCalendar';
 import MessageBubble from '@/components/messaging/MessageBubble';
 import MessageInput from '@/components/messaging/MessageInput';
 import ConversationList from '@/components/messaging/ConversationList';
+import PaymentHistory from '@/components/coach/PaymentHistory';
 
 export default function CoachDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -68,6 +69,17 @@ export default function CoachDashboard() {
     queryKey: ['unreadMessages', coach?.id],
     queryFn: () => base44.entities.Message.filter({ receiver_id: coach?.id, read: false }),
     enabled: !!coach?.id,
+  });
+
+  const { data: transactions = [], isLoading: transactionsLoading } = useQuery({
+    queryKey: ['transactions', coach?.id],
+    queryFn: () => base44.entities.Transaction.filter({ coach_id: coach?.id }, '-created_date'),
+    enabled: !!coach?.id,
+  });
+
+  const { data: allSessions = [] } = useQuery({
+    queryKey: ['allSessions'],
+    queryFn: () => base44.entities.Session.list(),
   });
 
   // Subscribe to real-time updates
@@ -165,6 +177,25 @@ export default function CoachDashboard() {
       });
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+    },
+  });
+
+  const refundMutation = useMutation({
+    mutationFn: async (transaction) => {
+      await base44.entities.Transaction.update(transaction.id, {
+        status: 'refunded',
+      });
+      
+      if (transaction.session_id) {
+        await base44.entities.Session.update(transaction.session_id, {
+          status: 'cancelled',
+        });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['sessions'] });
     },
   });
@@ -292,6 +323,7 @@ export default function CoachDashboard() {
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="payments">Payments</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard">
@@ -458,8 +490,31 @@ export default function CoachDashboard() {
             </div>
           </div>
         </TabsContent>
-      </Tabs>
-      </main>
+
+        <TabsContent value="payments">
+          <div className="max-w-4xl">
+            <div className="mb-6">
+              <h2 className="text-xl font-medium text-neutral-900 mb-2">Payment History</h2>
+              <p className="text-sm text-neutral-500">View and manage your recent payments</p>
+            </div>
+
+            <PaymentHistory
+              transactions={transactions.map(t => ({
+                ...t,
+                session: allSessions.find(s => s.id === t.session_id)
+              }))}
+              athletes={athletes}
+              isLoading={transactionsLoading}
+              onRefund={(transaction) => {
+                if (confirm('Are you sure you want to refund this payment? This action cannot be undone.')) {
+                  refundMutation.mutate(transaction);
+                }
+              }}
+            />
+          </div>
+        </TabsContent>
+        </Tabs>
+        </main>
 
       {/* Manual Override Modal */}
       <ManualOverrideModal
