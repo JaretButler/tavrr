@@ -283,7 +283,7 @@ export default function CoachDashboard() {
                 alt="Tavrr"
                 className="h-10"
               />
-              <h1 className="text-xl font-medium text-neutral-900">Instructor Dashboard</h1>
+              <h1 className="text-xl font-medium text-neutral-900">Instructor Jaret</h1>
             </div>
             <div className="flex items-center gap-3">
               <Link to={createPageUrl('Contacts')}>
