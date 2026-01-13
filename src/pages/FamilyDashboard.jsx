@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, isToday, isFuture, isSameDay } from 'date-fns';
-import { Settings, Bell, Plus, MessageCircle } from 'lucide-react';
+import { Settings, Bell, Plus, MessageCircle, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
@@ -245,17 +245,29 @@ export default function FamilyDashboard() {
 
       <main className="max-w-6xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="messages" className="relative">
-              Messages
-              {unreadMessages.length > 0 && (
-                <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
-                  {unreadMessages.length}
-                </span>
-              )}
-            </TabsTrigger>
-          </TabsList>
+          <div className="flex items-center justify-between mb-6">
+            <TabsList>
+              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+              <TabsTrigger value="messages" className="relative">
+                Messages
+                {unreadMessages.length > 0 && (
+                  <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
+                    {unreadMessages.length}
+                  </span>
+                )}
+              </TabsTrigger>
+            </TabsList>
+            
+            <Button
+              variant="outline"
+              onClick={() => setShowSessionHistory(true)}
+              className="flex items-center gap-2"
+            >
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span className="font-medium">{completedSessions.length}</span>
+              <span className="text-neutral-500">Sessions</span>
+            </Button>
+          </div>
 
           <TabsContent value="dashboard">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -321,18 +333,6 @@ export default function FamilyDashboard() {
                   })}
                 </div>
               )}
-            </motion.div>
-
-            {/* Sessions Completed */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-            >
-              <SessionsCompletedCard 
-                completedCount={completedSessions.length}
-                onClick={() => setShowSessionHistory(true)}
-              />
             </motion.div>
 
             {/* Upcoming Sessions */}
