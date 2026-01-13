@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Plus, Upload, Send, Search, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,7 @@ export default function Contacts() {
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedContacts, setSelectedContacts] = useState([]);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data: user } = useQuery({
     queryKey: ['currentUser'],
@@ -136,6 +137,10 @@ export default function Contacts() {
     if (selectedContacts.length > 0) {
       inviteContactsMutation.mutate(selectedContacts);
     }
+  };
+
+  const handleMessage = (contact) => {
+    navigate(createPageUrl('CoachDashboard') + '?tab=messages&contact=' + contact.id);
   };
 
   const filteredContacts = contacts.filter(contact => {
@@ -267,6 +272,7 @@ export default function Contacts() {
                   isSelected={selectedContacts.includes(contact.id)}
                   onEdit={handleEdit}
                   onDelete={(id) => deleteContactMutation.mutate(id)}
+                  onMessage={handleMessage}
                   selectionMode={selectionMode}
                 />
               ))}

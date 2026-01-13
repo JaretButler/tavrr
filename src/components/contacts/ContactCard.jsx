@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, Send, CheckCircle2, MoreVertical, Trash2, Edit } from 'lucide-react';
+import { User, Mail, Phone, Send, CheckCircle2, MoreVertical, Trash2, Edit, MessageCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-export default function ContactCard({ contact, onSelect, isSelected, onEdit, onDelete, onInvite, selectionMode }) {
+export default function ContactCard({ contact, onSelect, isSelected, onEdit, onDelete, onInvite, onMessage, selectionMode }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -49,6 +49,10 @@ export default function ContactCard({ contact, onSelect, isSelected, onEdit, onD
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => onMessage?.(contact)}>
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Message
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onEdit?.(contact)}>
                   <Edit className="w-4 h-4 mr-2" />
                   Edit
