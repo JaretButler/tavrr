@@ -18,7 +18,7 @@ export default function AthleteSwitcher({ athletes = [], selectedAthlete, onSele
         <button className="flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-neutral-50 transition-colors group">
           <div className="text-left">
             <p className="text-sm font-medium text-neutral-900">Callahan Family</p>
-            <p className="text-xs text-neutral-400">{current?.name || 'Select Athlete'}</p>
+            <p className="text-xs text-neutral-400">{current?.name || 'Select Profile'}</p>
           </div>
           <ChevronDown className="w-4 h-4 text-neutral-400 group-hover:text-neutral-600 transition-colors ml-2" />
         </button>
