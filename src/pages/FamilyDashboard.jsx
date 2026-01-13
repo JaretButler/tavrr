@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, isToday, isFuture, isSameDay } from 'date-fns';
-import { Settings, Bell, Plus, MessageCircle, CheckCircle2 } from 'lucide-react';
+import { Settings, Bell, Plus, MessageCircle, CheckCircle2, DollarSign } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
@@ -174,6 +174,31 @@ export default function FamilyDashboard() {
     },
   });
 
+  const sendPaymentReminderMutation = useMutation({
+    mutationFn: async () => {
+      const balance = family?.current_balance || 0;
+      const coachId = owedCoach;
+      const existingConv = conversations.find(c => c.otherPartyId === coachId);
+      
+      const conversationId = existingConv?.conversation_id || `conv_${Date.now()}`;
+      
+      await base44.entities.Message.create({
+        conversation_id: conversationId,
+        sender_id: family?.id,
+        sender_type: 'family',
+        receiver_id: coachId,
+        receiver_type: 'coach',
+        content: `Hi! I wanted to reach out about the outstanding balance of $${balance.toFixed(2)}. I plan to settle this soon. Thank you!`,
+        message_type: 'text',
+        athlete_id: selectedAthleteId,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
+      setActiveTab('messages');
+    },
+  });
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [conversationMessages]);
@@ -258,15 +283,29 @@ export default function FamilyDashboard() {
               </TabsTrigger>
             </TabsList>
             
-            <Button
-              variant="outline"
-              onClick={() => setShowSessionHistory(true)}
-              className="flex items-center gap-2"
-            >
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span className="font-medium">{completedSessions.length}</span>
-              <span className="text-neutral-500">Sessions</span>
-            </Button>
+            <div className="flex items-center gap-2">
+              {isLocked && (
+                <Button
+                  variant="outline"
+                  onClick={() => sendPaymentReminderMutation.mutate()}
+                  disabled={sendPaymentReminderMutation.isPending}
+                  className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5"
+                >
+                  <DollarSign className="w-4 h-4" />
+                  <span>Send Payment Reminder</span>
+                </Button>
+              )}
+              
+              <Button
+                variant="outline"
+                onClick={() => setShowSessionHistory(true)}
+                className="flex items-center gap-2"
+              >
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span className="font-medium">{completedSessions.length}</span>
+                <span className="text-neutral-500">Sessions</span>
+              </Button>
+            </div>
           </div>
 
           <TabsContent value="dashboard">
