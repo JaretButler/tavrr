@@ -50,7 +50,7 @@ export default function RevenueTicker({ todayVerified, todayProjected, monthlyRe
       <div className="pt-6 border-t border-neutral-100">
         <div className="flex items-center justify-between mb-4">
           <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
-            STD Revenue
+            Yearly Revenue
           </span>
           <div className="flex items-center gap-1.5">
             <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
