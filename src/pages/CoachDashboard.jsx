@@ -304,7 +304,7 @@ export default function CoachDashboard() {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-6 py-2">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="mb-6 flex flex-col gap-2 items-start">
             <TabsList className="flex-col h-auto items-start">
