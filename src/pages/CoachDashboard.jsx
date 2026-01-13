@@ -610,6 +610,46 @@ export default function CoachDashboard() {
         onConfirm={(data) => overrideMutation.mutate(data)}
         isLoading={overrideMutation.isPending}
       />
-    </div>
-  );
-}
+
+      {/* Today's Sessions Modal */}
+      {showTodaySessionsModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl border border-neutral-100 w-full max-w-md p-6">
+            <h2 className="text-lg font-medium text-neutral-900 mb-4">Message Today's Session</h2>
+            <div className="space-y-2 max-h-96 overflow-y-auto">
+              {todaySessions.length === 0 ? (
+                <p className="text-neutral-500 text-center py-6">No sessions scheduled for today</p>
+              ) : (
+                todaySessions.map(session => {
+                  const athlete = athletes.find(a => a.id === session.athlete_id);
+                  const existingConv = conversations.find(c => c.athleteId === session.athlete_id);
+                  return (
+                    <button
+                      key={session.id}
+                      onClick={() => {
+                        if (existingConv) {
+                          setSelectedConversation(existingConv);
+                        }
+                        setShowTodaySessionsModal(false);
+                      }}
+                      className="w-full text-left p-3 rounded-lg border border-neutral-100 hover:bg-neutral-50 transition-colors"
+                    >
+                      <p className="font-medium text-neutral-900">{athlete?.name || 'Athlete'}</p>
+                      <p className="text-sm text-neutral-500">{format(new Date(session.scheduled_time), 'h:mm a')} • ${session.rate}</p>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+            <button
+              onClick={() => setShowTodaySessionsModal(false)}
+              className="w-full mt-4 px-4 py-2 text-sm font-medium text-neutral-700 bg-neutral-100 hover:bg-neutral-200 rounded-lg transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+      </div>
+      );
+      }
