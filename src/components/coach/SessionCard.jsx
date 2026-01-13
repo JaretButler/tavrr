@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Clock, MapPin, User, CheckCircle2, XCircle, AlertCircle, MoreVertical } from 'lucide-react';
+import { Clock, MapPin, User, CheckCircle2, XCircle, AlertCircle, MoreVertical, Send } from 'lucide-react';
 import { format, isToday, isTomorrow, isPast } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,7 +24,7 @@ const rsvpConfig = {
   declined: { icon: XCircle, color: 'text-red-500' },
 };
 
-export default function SessionCard({ session, athlete, onManualOverride, onCancel }) {
+export default function SessionCard({ session, athlete, onManualOverride, onCancel, onManualSend }) {
   const sessionDate = new Date(session.scheduled_time);
   const status = statusConfig[session.status] || statusConfig.scheduled;
   const rsvp = rsvpConfig[session.rsvp_status] || rsvpConfig.pending;
@@ -77,6 +77,12 @@ export default function SessionCard({ session, athlete, onManualOverride, onCanc
               {isVerifiable && (
                 <DropdownMenuItem onClick={() => onManualOverride?.(session)}>
                   Manual Arrival
+                </DropdownMenuItem>
+              )}
+              {session.status === 'verified' && (
+                <DropdownMenuItem onClick={() => onManualSend?.(session)}>
+                  <Send className="w-4 h-4 mr-2" />
+                  Manual Send
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem onClick={() => onCancel?.(session)} className="text-red-600">

@@ -145,6 +145,30 @@ export default function CoachDashboard() {
     },
   });
 
+  const manualSendMutation = useMutation({
+    mutationFn: async (session) => {
+      const platformFee = 1;
+      const coachPayout = session.rate - platformFee;
+      
+      await base44.entities.Transaction.create({
+        session_id: session.id,
+        family_id: session.family_id,
+        coach_id: session.coach_id,
+        amount: session.rate,
+        coach_payout: coachPayout,
+        platform_fee: platformFee,
+        status: 'pending',
+      });
+
+      await base44.entities.Session.update(session.id, {
+        status: 'completed',
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['sessions'] });
+    },
+  });
+
   // Build conversations from messages
   const conversations = React.useMemo(() => {
     if (!allMessages.length || !coach?.id) return [];
@@ -308,6 +332,7 @@ export default function CoachDashboard() {
                         session={session}
                         athlete={athletes.find(a => a.id === session.athlete_id)}
                         onManualOverride={handleManualOverride}
+                        onManualSend={(session) => manualSendMutation.mutate(session)}
                         onCancel={() => {}}
                       />
                     ))}
