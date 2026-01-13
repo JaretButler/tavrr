@@ -286,15 +286,6 @@ export default function CoachDashboard() {
               <h1 className="text-xl font-medium text-neutral-900">Instructor Jaret</h1>
             </div>
             <div className="flex items-center gap-3">
-              <Button
-                variant="default"
-                onClick={() => setActiveTab('messages')}
-                className="bg-[#0066CC] hover:bg-[#0052A3]"
-              >
-                <MessageCircle className="w-4 h-4 mr-2" />
-                Message
-              </Button>
-
               <Link to={createPageUrl('Contacts')}>
                 <Button variant="ghost" size="icon">
                   <Users className="w-5 h-5 text-neutral-500" />
@@ -323,6 +314,14 @@ export default function CoachDashboard() {
             >
               <Plus className="w-4 h-4" />
               <span>Schedule Session</span>
+            </Button>
+            <Button
+              variant="default"
+              onClick={() => setActiveTab('messages')}
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] h-8 px-3 text-sm scale-[0.85]"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Message</span>
             </Button>
             <TabsTrigger value="messages" className="relative">
               Messages
