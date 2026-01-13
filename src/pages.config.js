@@ -3,6 +3,7 @@ import Contacts from './pages/Contacts';
 import FamilyDashboard from './pages/FamilyDashboard';
 import Home from './pages/Home';
 import PaymentSettings from './pages/PaymentSettings';
+import Messages from './pages/Messages';
 import __Layout from './Layout.jsx';
 
 
@@ -12,6 +13,7 @@ export const PAGES = {
     "FamilyDashboard": FamilyDashboard,
     "Home": Home,
     "PaymentSettings": PaymentSettings,
+    "Messages": Messages,
 }
 
 export const pagesConfig = {

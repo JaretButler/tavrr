@@ -3,7 +3,9 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, isToday, isFuture, isSameDay } from 'date-fns';
-import { Settings, Bell, Plus } from 'lucide-react';
+import { Settings, Bell, Plus, MessageCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -45,6 +47,13 @@ export default function FamilyDashboard() {
   const { data: coaches = [] } = useQuery({
     queryKey: ['coaches'],
     queryFn: () => base44.entities.Coach.list(),
+  });
+
+  // Get unread messages count
+  const { data: unreadMessages = [] } = useQuery({
+    queryKey: ['unreadMessages', family?.id],
+    queryFn: () => base44.entities.Message.filter({ receiver_id: family?.id, read: false }),
+    enabled: !!family?.id,
   });
 
   // Set first athlete as selected by default
@@ -125,6 +134,14 @@ export default function FamilyDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Link to={createPageUrl('Messages')}>
+                <Button variant="ghost" size="icon" className="relative">
+                  <MessageCircle className="w-5 h-5 text-neutral-500" />
+                  {unreadMessages.length > 0 && (
+                    <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#0066CC] rounded-full" />
+                  )}
+                </Button>
+              </Link>
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="w-5 h-5 text-neutral-500" />
               </Button>
