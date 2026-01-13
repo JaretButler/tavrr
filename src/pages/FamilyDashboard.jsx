@@ -290,7 +290,7 @@ export default function FamilyDashboard() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex items-center justify-between mb-6">
             <TabsList>
-              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+              <TabsTrigger value="dashboard">Home</TabsTrigger>
               <TabsTrigger value="messages" className="relative">
                 Messages
                 {unreadMessages.length > 0 && (
