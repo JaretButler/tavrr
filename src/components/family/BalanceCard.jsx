@@ -1,10 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { AlertTriangle, CreditCard, Lock, Fingerprint } from 'lucide-react';
+import { AlertTriangle, CreditCard, Lock, Fingerprint, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 
-export default function BalanceCard({ balance = 0, onSettle, isSettling, biometricEnabled }) {
+export default function BalanceCard({ balance = 0, onSettle, isSettling, biometricEnabled, paymentMethods = [] }) {
   const hasBalance = balance > 0;
+  const hasPaymentMethod = paymentMethods.length > 0;
 
   return (
     <motion.div
@@ -34,49 +37,67 @@ export default function BalanceCard({ balance = 0, onSettle, isSettling, biometr
         )}
       </div>
 
-      {hasBalance ? (
-        <div className="space-y-4">
-          <div className="flex items-start gap-2.5 p-3 bg-amber-100/50 rounded-xl">
-            <Lock className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-amber-700">
-              Future session RSVPs are locked until balance is settled. Settle now to unlock the field.
-            </p>
-          </div>
-          
-          <Button 
-            onClick={onSettle}
-            disabled={isSettling}
-            className="w-full bg-[#0066CC] hover:bg-[#0052A3] text-white h-12 rounded-xl font-medium"
-          >
-            {isSettling ? (
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
-              />
+      <div className="space-y-3">
+        {hasBalance ? (
+          <>
+            <div className="flex items-start gap-2.5 p-3 bg-amber-100/50 rounded-xl">
+              <Lock className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-amber-700">
+                Future session RSVPs are locked until balance is settled. Settle now to unlock the field.
+              </p>
+            </div>
+            
+            {!hasPaymentMethod ? (
+              <Link to={createPageUrl('PaymentSettings')}>
+                <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white h-12 rounded-xl font-medium">
+                  <CreditCard className="w-5 h-5 mr-2" />
+                  Add Payment Method to Settle
+                </Button>
+              </Link>
             ) : (
-              <span className="flex items-center gap-2">
-                {biometricEnabled ? (
-                  <>
-                    <Fingerprint className="w-5 h-5" />
-                    Settle with Face ID
-                  </>
+              <Button 
+                onClick={onSettle}
+                disabled={isSettling}
+                className="w-full bg-[#0066CC] hover:bg-[#0052A3] text-white h-12 rounded-xl font-medium"
+              >
+                {isSettling ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                  />
                 ) : (
-                  <>
-                    <CreditCard className="w-5 h-5" />
-                    Settle Balance
-                  </>
+                  <span className="flex items-center gap-2">
+                    {biometricEnabled ? (
+                      <>
+                        <Fingerprint className="w-5 h-5" />
+                        Settle with Face ID
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="w-5 h-5" />
+                        Settle Balance
+                      </>
+                    )}
+                  </span>
                 )}
-              </span>
+              </Button>
             )}
+          </>
+        ) : (
+          <div className="flex items-center gap-2 text-emerald-600">
+            <div className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="text-sm font-medium">All caught up</span>
+          </div>
+        )}
+        
+        <Link to={createPageUrl('PaymentSettings')}>
+          <Button variant="outline" className="w-full border-neutral-200 text-neutral-600 h-10 rounded-xl">
+            <Settings className="w-4 h-4 mr-2" />
+            Manage Payment Methods
           </Button>
-        </div>
-      ) : (
-        <div className="flex items-center gap-2 text-emerald-600">
-          <div className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span className="text-sm font-medium">All caught up</span>
-        </div>
-      )}
+        </Link>
+      </div>
     </motion.div>
   );
 }

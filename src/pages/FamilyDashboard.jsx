@@ -147,6 +147,7 @@ export default function FamilyDashboard() {
                   onSettle={handleSettle}
                   isSettling={isSettling}
                   biometricEnabled={family?.biometric_enabled}
+                  paymentMethods={family?.payment_methods || []}
                 />
               )}
             </motion.div>
