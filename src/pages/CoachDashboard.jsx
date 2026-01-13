@@ -45,6 +45,13 @@ export default function CoachDashboard() {
     queryFn: () => base44.entities.Athlete.list(),
   });
 
+  // Get unread messages count
+  const { data: unreadMessages = [] } = useQuery({
+    queryKey: ['unreadMessages', coach?.id],
+    queryFn: () => base44.entities.Message.filter({ receiver_id: coach?.id, read: false }),
+    enabled: !!coach?.id,
+  });
+
   // Subscribe to real-time session updates
   useEffect(() => {
     const unsubscribe = base44.entities.Session.subscribe((event) => {
