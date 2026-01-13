@@ -119,7 +119,7 @@ export default function CoachDashboard() {
       <header className="bg-white border-b border-neutral-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-medium text-neutral-900">Instructor {coach?.display_name}</h1>
+            <h1 className="text-xl font-medium text-neutral-900">Instructor Jaret</h1>
             <div className="flex items-center gap-3">
               <Link to={createPageUrl('Contacts')}>
                 <Button variant="ghost" size="icon">
