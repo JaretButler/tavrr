@@ -451,13 +451,24 @@ export default function CoachDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Conversations List */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-2xl border border-neutral-100 p-4">
-                <ConversationList
-                  conversations={conversations}
-                  selectedConversation={selectedConversation}
-                  onSelect={setSelectedConversation}
-                  isLoading={messagesLoading}
-                />
+              <div className="bg-white rounded-2xl border border-neutral-100 overflow-hidden flex flex-col h-[calc(100vh-16rem)]">
+                <div className="px-4 py-3 border-b border-neutral-100">
+                  <Button
+                    variant="default"
+                    onClick={() => setShowTodaySessionsModal(true)}
+                    className="w-full bg-[#0066CC] hover:bg-[#0052A3] text-sm"
+                  >
+                    Message Today's Session
+                  </Button>
+                </div>
+                <div className="overflow-y-auto flex-1">
+                  <ConversationList
+                    conversations={conversations}
+                    selectedConversation={selectedConversation}
+                    onSelect={setSelectedConversation}
+                    isLoading={messagesLoading}
+                  />
+                </div>
               </div>
             </div>
 
