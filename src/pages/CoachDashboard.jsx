@@ -309,6 +309,15 @@ export default function CoachDashboard() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="mb-6 flex gap-6">
             <div className="flex flex-col gap-2">
+              <Link to={createPageUrl('Home')}>
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 justify-start"
+                >
+                  <Home className="w-4 h-4" />
+                  <span>Home</span>
+                </Button>
+              </Link>
               <Button
                 variant="default"
                 className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start"
