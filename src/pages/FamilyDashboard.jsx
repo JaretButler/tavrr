@@ -3,7 +3,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, isToday, isFuture, isSameDay } from 'date-fns';
-import { Settings, Bell, Plus, MessageCircle, CheckCircle2, DollarSign } from 'lucide-react';
+import { Settings, Bell, Plus, MessageCircle, CheckCircle2, DollarSign, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
@@ -302,6 +302,16 @@ export default function FamilyDashboard() {
             </TabsList>
             
             <div className="flex items-center gap-2">
+              <Link to={createPageUrl('ScheduleSession')}>
+                <Button
+                  variant="default"
+                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3]"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Book Session</span>
+                </Button>
+              </Link>
+
               {isLocked && (
                 <Button
                   variant="outline"

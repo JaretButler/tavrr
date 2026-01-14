@@ -318,13 +318,15 @@ export default function CoachDashboard() {
                   <span>Home</span>
                 </Button>
               </Link>
-              <Button
-                variant="default"
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Schedule Session</span>
-              </Button>
+              <Link to={createPageUrl('CoachAvailability')}>
+                <Button
+                  variant="default"
+                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start w-full"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Manage Availability</span>
+                </Button>
+              </Link>
               <Button
                 variant="default"
                 onClick={() => setActiveTab('messages')}
