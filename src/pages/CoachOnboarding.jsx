@@ -9,8 +9,7 @@ import { createPageUrl } from '@/utils';
 
 const roleOptions = [
   { value: 'coach', label: 'Coach', icon: Users, description: 'Athletic training & development' },
-  { value: 'instructor', label: 'Instructor', icon: GraduationCap, description: 'Skills & techniques teaching' },
-  { value: 'tutor', label: 'Tutor', icon: BookOpen, description: 'Academic & educational support' },
+  { value: 'instructor', label: 'Instructor', icon: GraduationCap, description: 'Teacher, Educator, Tutor' },
 ];
 
 const paymentOptions = [
