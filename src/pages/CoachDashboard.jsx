@@ -318,7 +318,7 @@ export default function CoachDashboard() {
               </Button>
             </Link>
             
-            <Link to={createPageUrl('CoachAvailability')} className="w-1/4">
+            <Link to={createPageUrl('CoachAvailability')} className="w-1/2">
               <Button
                 variant="default"
                 className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start w-full"
