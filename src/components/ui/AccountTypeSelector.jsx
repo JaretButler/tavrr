@@ -1,8 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Briefcase, Users } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Briefcase, Users, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function AccountTypeSelector({ onSelect }) {
+  const [selectedType, setSelectedType] = useState(null);
   return (
     <div className="min-h-screen bg-neutral-50 flex items-center justify-center p-6">
       <motion.div
@@ -39,7 +41,9 @@ export default function AccountTypeSelector({ onSelect }) {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => onSelect('coach')}
-            className="bg-white border border-neutral-200 rounded-2xl p-8 text-left hover:border-[#0066CC] hover:shadow-lg transition-all group"
+            className={`bg-white border rounded-2xl p-8 text-left hover:border-[#0066CC] hover:shadow-lg transition-all group ${
+              selectedType === 'coach' ? 'border-[#0066CC] shadow-lg' : 'border-neutral-200'
+            }`}
           >
             <div className="flex items-start gap-5">
               <div className="p-4 bg-neutral-100 rounded-xl group-hover:bg-blue-50 transition-colors">
@@ -57,8 +61,10 @@ export default function AccountTypeSelector({ onSelect }) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onSelect('family')}
-            className="bg-white border border-neutral-200 rounded-2xl p-8 text-left hover:border-[#0066CC] hover:shadow-lg transition-all group"
+            onClick={() => setSelectedType('family')}
+            className={`bg-white border rounded-2xl p-8 text-left hover:border-[#0066CC] hover:shadow-lg transition-all group ${
+              selectedType === 'family' ? 'border-[#0066CC] shadow-lg' : 'border-neutral-200'
+            }`}
           >
             <div className="flex items-start gap-5">
               <div className="p-4 bg-neutral-100 rounded-xl group-hover:bg-blue-50 transition-colors">
@@ -73,6 +79,25 @@ export default function AccountTypeSelector({ onSelect }) {
             </div>
           </motion.button>
         </div>
+
+        <AnimatePresence>
+          {selectedType === 'family' && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="mt-6"
+            >
+              <Button
+                onClick={() => onSelect('family')}
+                className="w-full bg-[#0066CC] hover:bg-[#0052A3] h-12 text-base"
+              >
+                Next
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <p className="text-xs text-neutral-400 text-center mt-8">
           COPPA & MAAPP Compliant

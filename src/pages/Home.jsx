@@ -7,10 +7,12 @@ import { createPageUrl } from '@/utils';
 import AccountTypeSelector from '@/components/ui/AccountTypeSelector';
 import CoachDashboard from './CoachDashboard';
 import FamilyDashboard from './FamilyDashboard';
+import FamilyOnboarding from './FamilyOnboarding';
 
 export default function Home() {
   const [accountType, setAccountType] = useState(null);
   const [isSettingUp, setIsSettingUp] = useState(false);
+  const [showFamilyOnboarding, setShowFamilyOnboarding] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: user, isLoading: userLoading } = useQuery({
@@ -79,11 +81,11 @@ export default function Home() {
   });
 
   const handleAccountTypeSelect = async (type) => {
-    setIsSettingUp(true);
     if (type === 'coach') {
+      setIsSettingUp(true);
       setupCoachMutation.mutate();
     } else {
-      setupFamilyMutation.mutate();
+      setShowFamilyOnboarding(true);
     }
   };
 
@@ -99,6 +101,11 @@ export default function Home() {
         </div>
       </div>
     );
+  }
+
+  // Show family onboarding if selected
+  if (showFamilyOnboarding && !familyProfile) {
+    return <FamilyOnboarding />;
   }
 
   // No account type selected - show selector
