@@ -318,7 +318,7 @@ export default function CoachDashboard() {
               </Button>
             </Link>
             
-            <Link to={createPageUrl('CoachAvailability')}>
+            <Link to={createPageUrl('CoachAvailability')} className="w-1/2">
               <Button
                 variant="default"
                 className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start w-full"
@@ -331,7 +331,7 @@ export default function CoachDashboard() {
             <Button
               variant="default"
               onClick={() => setActiveTab('messages')}
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start w-full"
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start w-1/2"
             >
               <MessageCircle className="w-4 h-4" />
               <span>Messages</span>
