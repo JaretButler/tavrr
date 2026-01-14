@@ -25,7 +25,7 @@ export const PAGES = {
 }
 
 export const pagesConfig = {
-    mainPage: "CoachDashboard",
+    mainPage: "Home",
     Pages: PAGES,
     Layout: __Layout,
 };
