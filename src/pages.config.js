@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Messages from './pages/Messages';
 import PaymentSettings from './pages/PaymentSettings';
 import ScheduleSession from './pages/ScheduleSession';
+import TestOnboarding from './pages/TestOnboarding';
 import __Layout from './Layout.jsx';
 
 
@@ -22,6 +23,7 @@ export const PAGES = {
     "Messages": Messages,
     "PaymentSettings": PaymentSettings,
     "ScheduleSession": ScheduleSession,
+    "TestOnboarding": TestOnboarding,
 }
 
 export const pagesConfig = {
