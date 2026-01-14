@@ -29,7 +29,7 @@ export default function AccountTypeSelector({ onSelect }) {
             Welcome to Tavrr
           </h1>
           <p className="text-lg text-neutral-600 mb-2">
-            Training sessions made simple
+            Perfectly Designed. For Everyone.
           </p>
           <p className="text-sm text-neutral-400">
             Effortless scheduling, instant payments, and seamless coordination for instructors and families alike.
