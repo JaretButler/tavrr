@@ -50,7 +50,8 @@ export default function AccountTypeSelector({ onSelect }) {
                 <Briefcase className="w-6 h-6 text-neutral-600 group-hover:text-[#0066CC]" />
               </div>
               <div>
-                <h2 className="text-lg font-medium text-neutral-900 mb-1">I'm a Coach</h2>
+                <h2 className="text-lg font-medium text-neutral-900 mb-1">I'm an Instructor</h2>
+                <p className="text-xs text-neutral-400 mb-2">Coaches, Tutors, Teachers</p>
                 <p className="text-sm text-neutral-500">
                   Get paid instantly. Automate billing, track revenue recovery, and grow your business with zero payment friction.
                 </p>
