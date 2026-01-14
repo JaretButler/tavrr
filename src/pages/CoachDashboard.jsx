@@ -348,22 +348,13 @@ export default function CoachDashboard() {
               </Button>
             </div>
 
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                onClick={() => setActiveTab('payments')}
-                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
-              >
-                Payment History
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setActiveTab('sessionHistory')}
-                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
-              >
-                Past Sessions
-              </Button>
-            </div>
+            <Button
+              variant="outline"
+              onClick={() => setActiveTab('admin')}
+              className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
+            >
+              Admin
+            </Button>
           </div>
 
           <TabsContent value="dashboard">
@@ -542,79 +533,88 @@ export default function CoachDashboard() {
           </div>
         </TabsContent>
 
-        <TabsContent value="payments">
-          <div className="max-w-4xl">
-            <div className="mb-6">
-              <h2 className="text-xl font-medium text-neutral-900 mb-2">Payment History</h2>
-              <p className="text-sm text-neutral-500">View and manage your recent payments</p>
-            </div>
+        <TabsContent value="admin">
+          <Tabs defaultValue="payments" className="w-full">
+            <TabsList className="mb-6">
+              <TabsTrigger value="payments">Payment History</TabsTrigger>
+              <TabsTrigger value="sessionHistory">Past Sessions</TabsTrigger>
+            </TabsList>
 
-            <PaymentHistory
-              transactions={transactions.map(t => ({
-                ...t,
-                session: allSessions.find(s => s.id === t.session_id)
-              }))}
-              athletes={athletes}
-              isLoading={transactionsLoading}
-              onRefund={(transaction) => {
-                if (confirm('Are you sure you want to refund this payment? This action cannot be undone.')) {
-                  refundMutation.mutate(transaction);
-                }
-              }}
-            />
-          </div>
-        </TabsContent>
+            <TabsContent value="payments">
+              <div className="max-w-4xl">
+                <div className="mb-6">
+                  <h2 className="text-xl font-medium text-neutral-900 mb-2">Payment History</h2>
+                  <p className="text-sm text-neutral-500">View and manage your recent payments</p>
+                </div>
 
-        <TabsContent value="sessionHistory">
-          <div className="max-w-4xl">
-            <div className="mb-6">
-              <h2 className="text-xl font-medium text-neutral-900 mb-2">Past Sessions</h2>
-              <p className="text-sm text-neutral-500">View all your previous sessions</p>
-            </div>
+                <PaymentHistory
+                  transactions={transactions.map(t => ({
+                    ...t,
+                    session: allSessions.find(s => s.id === t.session_id)
+                  }))}
+                  athletes={athletes}
+                  isLoading={transactionsLoading}
+                  onRefund={(transaction) => {
+                    if (confirm('Are you sure you want to refund this payment? This action cannot be undone.')) {
+                      refundMutation.mutate(transaction);
+                    }
+                  }}
+                />
+              </div>
+            </TabsContent>
 
-            <div className="space-y-4">
-              {sessionsLoading ? (
+            <TabsContent value="sessionHistory">
+              <div className="max-w-4xl">
+                <div className="mb-6">
+                  <h2 className="text-xl font-medium text-neutral-900 mb-2">Past Sessions</h2>
+                  <p className="text-sm text-neutral-500">View all your previous sessions</p>
+                </div>
+
                 <div className="space-y-4">
-                  {[1, 2, 3].map(i => (
-                    <Skeleton key={i} className="h-24 w-full rounded-xl" />
-                  ))}
-                </div>
-              ) : sessions.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
-                  <Calendar className="w-10 h-10 text-neutral-200 mx-auto mb-4" />
-                  <p className="text-neutral-500">No sessions found</p>
-                </div>
-              ) : (
-                sessions.map(session => (
-                  <div key={session.id} className="bg-white rounded-2xl border border-neutral-100 p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="font-medium text-neutral-900">
-                            {athletes.find(a => a.id === session.athlete_id)?.name || 'Athlete'}
-                          </h3>
-                          <span className={`px-2 py-1 rounded-lg text-xs font-medium ${
-                            session.status === 'completed' ? 'bg-green-100 text-green-700' :
-                            session.status === 'cancelled' ? 'bg-red-100 text-red-700' :
-                            session.status === 'verified' ? 'bg-blue-100 text-blue-700' :
-                            'bg-neutral-100 text-neutral-700'
-                          }`}>
-                            {session.status}
-                          </span>
-                        </div>
-                        <p className="text-sm text-neutral-500">
-                          {format(new Date(session.scheduled_time), 'EEEE, MMMM d, yyyy • h:mm a')}
-                        </p>
-                        <p className="text-sm text-neutral-500 mt-1">
-                          {session.facility_name} • {session.duration_minutes} min • ${session.rate}
-                        </p>
-                      </div>
+                  {sessionsLoading ? (
+                    <div className="space-y-4">
+                      {[1, 2, 3].map(i => (
+                        <Skeleton key={i} className="h-24 w-full rounded-xl" />
+                      ))}
                     </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
+                  ) : sessions.length === 0 ? (
+                    <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
+                      <Calendar className="w-10 h-10 text-neutral-200 mx-auto mb-4" />
+                      <p className="text-neutral-500">No sessions found</p>
+                    </div>
+                  ) : (
+                    sessions.map(session => (
+                      <div key={session.id} className="bg-white rounded-2xl border border-neutral-100 p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <h3 className="font-medium text-neutral-900">
+                                {athletes.find(a => a.id === session.athlete_id)?.name || 'Athlete'}
+                              </h3>
+                              <span className={`px-2 py-1 rounded-lg text-xs font-medium ${
+                                session.status === 'completed' ? 'bg-green-100 text-green-700' :
+                                session.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                session.status === 'verified' ? 'bg-blue-100 text-blue-700' :
+                                'bg-neutral-100 text-neutral-700'
+                              }`}>
+                                {session.status}
+                              </span>
+                            </div>
+                            <p className="text-sm text-neutral-500">
+                              {format(new Date(session.scheduled_time), 'EEEE, MMMM d, yyyy • h:mm a')}
+                            </p>
+                            <p className="text-sm text-neutral-500 mt-1">
+                              {session.facility_name} • {session.duration_minutes} min • ${session.rate}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </TabsContent>
         </Tabs>
         </main>
