@@ -19,6 +19,7 @@ import MessageBubble from '@/components/messaging/MessageBubble';
 import MessageInput from '@/components/messaging/MessageInput';
 import ConversationList from '@/components/messaging/ConversationList';
 import PaymentHistory from '@/components/coach/PaymentHistory';
+import AddSessionModal from '@/components/coach/AddSessionModal';
 
 export default function CoachDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -28,6 +29,7 @@ export default function CoachDashboard() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showTodaySessionsModal, setShowTodaySessionsModal] = useState(false);
+  const [showAddSessionModal, setShowAddSessionModal] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -321,6 +323,7 @@ export default function CoachDashboard() {
             <div className="flex gap-2">
               <Button
                 variant="default"
+                onClick={() => setShowAddSessionModal(true)}
                 className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start flex-1"
               >
                 <Plus className="w-4 h-4" />
@@ -621,6 +624,15 @@ export default function CoachDashboard() {
         athlete={selectedAthlete}
         onConfirm={(data) => overrideMutation.mutate(data)}
         isLoading={overrideMutation.isPending}
+      />
+
+      {/* Add Session Modal */}
+      <AddSessionModal
+        isOpen={showAddSessionModal}
+        onClose={() => setShowAddSessionModal(false)}
+        coach={coach}
+        athletes={athletes}
+        onSuccess={() => queryClient.invalidateQueries({ queryKey: ['sessions'] })}
       />
 
       {/* Today's Sessions Modal */}
