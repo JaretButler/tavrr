@@ -280,15 +280,15 @@ export default function CoachDashboard() {
       <header className="bg-white border-b border-neutral-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/b8b585dd5_JXyv2ZNYEizRWxtiY5Iwp.png"
                 alt="Tavrr"
                 className="h-[42.4px]"
               />
-              <div>
-                <h1 className="text-2xl font-semibold text-neutral-900 tracking-tight">Instructor Jaret</h1>
-                <p className="text-xs text-neutral-500 mt-0.5">Tennis Coach</p>
+              <div className="border-l border-neutral-200 pl-4">
+                <h1 className="text-sm font-medium text-neutral-900">Instructor Jaret</h1>
+                <p className="text-xs text-neutral-500">Tennis Coach</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
