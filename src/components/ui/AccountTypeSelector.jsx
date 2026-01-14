@@ -13,12 +13,7 @@ export default function AccountTypeSelector({ onSelect }) {
         className="max-w-lg w-full"
       >
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <img 
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/icon_kj3COwIJy0HO0QfNyIYSR.png"
-              alt="Tavrr Icon"
-              className="h-16 w-16"
-            />
+          <div className="flex justify-center mb-8">
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/f390a923b_tfA4gvqQ0K1ptroztEoWt.png"
               alt="Tavrr"
