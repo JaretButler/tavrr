@@ -70,7 +70,7 @@ export default function AccountTypeSelector({ onSelect }) {
                 <h2 className="text-lg font-medium text-neutral-900 mb-1">I'm a Participant</h2>
                 <p className="text-xs text-neutral-400 mb-2">Athlete, Student, or Family Member</p>
                 <p className="text-sm text-neutral-500">
-                  No more invoices or awkward payments. Track sessions, manage schedules, and pay automatically in one simple app.
+                  Track sessions, manage schedules, and pay automatically in one simple app.
                 </p>
               </div>
             </div>
