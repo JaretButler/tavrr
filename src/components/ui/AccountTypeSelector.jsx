@@ -29,10 +29,10 @@ export default function AccountTypeSelector({ onSelect }) {
             Welcome to Tavrr
           </h1>
           <p className="text-lg text-neutral-600 mb-2">
-            Instant payments at every handshake
+            Training sessions made simple
           </p>
           <p className="text-sm text-neutral-400">
-            Automated billing and revenue recovery for coaches. Simple, structured payments for families.
+            Effortless scheduling, instant payments, and seamless coordination for instructors and families alike.
           </p>
         </div>
 
