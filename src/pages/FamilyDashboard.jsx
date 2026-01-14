@@ -263,7 +263,7 @@ export default function FamilyDashboard() {
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/f390a923b_tfA4gvqQ0K1ptroztEoWt.png"
                 alt="Tavrr"
-                className="h-[2.8rem]"
+                className="h-[2.968rem]"
               />
               <div className="border-l border-neutral-200 pl-4">
                 <AthleteSwitcher
