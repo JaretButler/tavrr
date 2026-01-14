@@ -19,6 +19,7 @@ export default function FamilyOnboarding() {
   const [selectedRole, setSelectedRole] = useState(null);
   const [familyId, setFamilyId] = useState(null);
   const [athletes, setAthletes] = useState([{ name: '', age: '', sport: '' }]);
+  const [selfInfo, setSelfInfo] = useState({ firstName: '', lastName: '', email: '', phone: '' });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -64,6 +65,26 @@ export default function FamilyOnboarding() {
     },
   });
 
+  const createSelfMutation = useMutation({
+    mutationFn: async () => {
+      const fullName = `${selfInfo.firstName} ${selfInfo.lastName}`.trim();
+      await base44.entities.Athlete.create({
+        family_id: familyId,
+        name: fullName,
+        avatar_color: '#0066CC',
+      });
+      
+      // Update user info with phone if provided
+      if (selfInfo.phone) {
+        await base44.auth.updateMe({ phone: selfInfo.phone });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['athletes'] });
+      navigate(createPageUrl('Home'));
+    },
+  });
+
   const handleAddAthlete = () => {
     setAthletes([...athletes, { name: '', age: '', sport: '' }]);
   };
@@ -85,7 +106,11 @@ export default function FamilyOnboarding() {
   };
 
   const handleComplete = () => {
-    createAthletesMutation.mutate();
+    if (selectedRole === 'parent') {
+      createAthletesMutation.mutate();
+    } else {
+      createSelfMutation.mutate();
+    }
   };
 
   return (
@@ -102,10 +127,10 @@ export default function FamilyOnboarding() {
             className="h-12 mx-auto mb-6"
           />
           <h1 className="text-2xl font-medium text-neutral-900 mb-2">
-            {step === 1 ? 'Welcome to Tavrr' : 'Add Athlete Profiles'}
+            {step === 1 ? 'Welcome to Tavrr' : selectedRole === 'parent' ? 'Add Athlete Profiles' : 'Your Information'}
           </h1>
           <p className="text-neutral-500">
-            {step === 1 ? 'Tell us about yourself' : 'Add the athletes you manage'}
+            {step === 1 ? 'Tell us about yourself' : selectedRole === 'parent' ? 'Add the athletes you manage' : 'Tell us a bit about yourself'}
           </p>
         </div>
 
@@ -156,7 +181,7 @@ export default function FamilyOnboarding() {
                 {createFamilyMutation.isPending ? 'Creating...' : 'Next'}
               </Button>
             </>
-          ) : (
+          ) : selectedRole === 'parent' ? (
             <>
               <div className="space-y-4 mb-6">
                 {athletes.map((athlete, index) => (
@@ -216,6 +241,65 @@ export default function FamilyOnboarding() {
                 className="w-full bg-[#0066CC] hover:bg-[#0052A3]"
               >
                 {createAthletesMutation.isPending ? 'Completing...' : 'Complete Setup'}
+              </Button>
+            </>
+          ) : (
+            <>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                      First Name *
+                    </label>
+                    <Input
+                      placeholder="First name"
+                      value={selfInfo.firstName}
+                      onChange={(e) => setSelfInfo({ ...selfInfo, firstName: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                      Last Name *
+                    </label>
+                    <Input
+                      placeholder="Last name"
+                      value={selfInfo.lastName}
+                      onChange={(e) => setSelfInfo({ ...selfInfo, lastName: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                    Email *
+                  </label>
+                  <Input
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={selfInfo.email}
+                    onChange={(e) => setSelfInfo({ ...selfInfo, email: e.target.value })}
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                    Cell Phone Number
+                  </label>
+                  <Input
+                    type="tel"
+                    placeholder="(555) 123-4567"
+                    value={selfInfo.phone}
+                    onChange={(e) => setSelfInfo({ ...selfInfo, phone: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <Button
+                onClick={handleComplete}
+                disabled={!selfInfo.firstName.trim() || !selfInfo.lastName.trim() || !selfInfo.email.trim() || createSelfMutation.isPending}
+                className="w-full mt-6 bg-[#0066CC] hover:bg-[#0052A3]"
+              >
+                {createSelfMutation.isPending ? 'Completing...' : 'Complete Setup'}
               </Button>
             </>
           )}
