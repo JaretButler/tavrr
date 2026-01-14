@@ -289,9 +289,9 @@ export default function FamilyDashboard() {
       <main className="max-w-6xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="flex items-center justify-between mb-6">
-            <TabsList>
-              <TabsTrigger value="dashboard">Home</TabsTrigger>
-              <TabsTrigger value="messages" className="relative">
+            <TabsList className="h-10">
+              <TabsTrigger value="dashboard" className="h-10 px-6">Home</TabsTrigger>
+              <TabsTrigger value="messages" className="relative h-10 px-6">
                 Messages
                 {unreadMessages.length > 0 && (
                   <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
@@ -307,7 +307,7 @@ export default function FamilyDashboard() {
                   variant="outline"
                   onClick={() => sendPaymentReminderMutation.mutate()}
                   disabled={sendPaymentReminderMutation.isPending}
-                  className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5"
+                  className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5 h-10 px-6"
                 >
                   <DollarSign className="w-4 h-4" />
                   <span>Send Payment Reminder</span>
@@ -317,7 +317,7 @@ export default function FamilyDashboard() {
               <Button
                 variant="outline"
                 onClick={() => setShowSessionHistory(true)}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 h-10 px-6"
               >
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 <span className="font-medium">{completedSessions.length}</span>
