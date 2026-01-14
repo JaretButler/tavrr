@@ -307,21 +307,22 @@ export default function CoachDashboard() {
 
       <main className="max-w-7xl mx-auto px-6 py-2">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="mb-6 flex gap-6">
-            <div className="flex flex-col gap-2">
-              <Link to={createPageUrl('Home')}>
-                <Button
-                  variant="outline"
-                  className="flex items-center gap-2 bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 justify-start"
-                >
-                  <Home className="w-4 h-4" />
-                  <span>Home</span>
-                </Button>
-              </Link>
+          <div className="mb-6 space-y-3">
+            <Link to={createPageUrl('Home')}>
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 justify-start"
+              >
+                <Home className="w-4 h-4" />
+                <span>Home</span>
+              </Button>
+            </Link>
+            
+            <div className="flex gap-2">
               <Link to={createPageUrl('CoachAvailability')}>
                 <Button
                   variant="default"
-                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start w-full"
+                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Manage Availability</span>
@@ -340,8 +341,6 @@ export default function CoachDashboard() {
                   </span>
                 )}
               </Button>
-            </div>
-            <div className="flex flex-col gap-2">
               <Button
                 variant="outline"
                 onClick={() => setActiveTab('payments')}
