@@ -318,28 +318,30 @@ export default function CoachDashboard() {
               </Button>
             </Link>
 
-            <Button
-              variant="default"
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Add Session</span>
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="default"
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start flex-1"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Session</span>
+              </Button>
 
-            <Button
-              variant="default"
-              onClick={() => setActiveTab('messages')}
-              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start"
-            >
-              <MessageCircle className="w-4 h-4" />
-              <span>Messages</span>
-              {unreadMessages.length > 0 && (
-                <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
-                  {unreadMessages.length}
-                </span>
-              )}
-            </Button>
-            
+              <Button
+                variant="default"
+                onClick={() => setActiveTab('messages')}
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start flex-1"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Messages</span>
+                {unreadMessages.length > 0 && (
+                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
+                    {unreadMessages.length}
+                  </span>
+                )}
+              </Button>
+            </div>
+
             <div className="flex gap-2">
               <Button
                 variant="outline"
