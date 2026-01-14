@@ -313,16 +313,6 @@ export default function FamilyDashboard() {
                   <span>Send Payment Reminder</span>
                 </Button>
               )}
-              
-              <Button
-                variant="outline"
-                onClick={() => setShowSessionHistory(true)}
-                className="flex items-center gap-2 h-10 w-32"
-              >
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span className="font-medium">{completedSessions.length}</span>
-                <span className="text-neutral-500">Sessions</span>
-              </Button>
             </div>
           </div>
 
@@ -455,6 +445,17 @@ export default function FamilyDashboard() {
                 )}
               </motion.div>
             </div>
+
+            {/* Session History Button */}
+            <Button
+              variant="outline"
+              onClick={() => setShowSessionHistory(true)}
+              className="flex items-center justify-center gap-2 h-10 w-full"
+            >
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span className="font-medium">{completedSessions.length}</span>
+              <span className="text-neutral-500">Sessions</span>
+            </Button>
           </div>
 
           {/* Right Column - Calendar */}
