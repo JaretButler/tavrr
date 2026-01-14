@@ -318,29 +318,31 @@ export default function CoachDashboard() {
               </Button>
             </Link>
             
-            <div className="flex gap-2">
-              <Link to={createPageUrl('CoachAvailability')}>
-                <Button
-                  variant="default"
-                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start"
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>Manage Availability</span>
-                </Button>
-              </Link>
+            <Link to={createPageUrl('CoachAvailability')}>
               <Button
                 variant="default"
-                onClick={() => setActiveTab('messages')}
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start"
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start w-full"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>Messages</span>
-                {unreadMessages.length > 0 && (
-                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
-                    {unreadMessages.length}
-                  </span>
-                )}
+                <Calendar className="w-4 h-4" />
+                <span>Manage Availability</span>
               </Button>
+            </Link>
+            
+            <Button
+              variant="default"
+              onClick={() => setActiveTab('messages')}
+              className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start w-full"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Messages</span>
+              {unreadMessages.length > 0 && (
+                <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
+                  {unreadMessages.length}
+                </span>
+              )}
+            </Button>
+            
+            <div className="flex gap-2">
               <Button
                 variant="outline"
                 onClick={() => setActiveTab('payments')}
