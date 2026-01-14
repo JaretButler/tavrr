@@ -14,7 +14,7 @@ export default function RevenueTicker({ todayVerified, todayProjected, monthlyRe
           <span className="text-[10px] tracking-[0.2em] uppercase text-neutral-400 font-medium">
             Today's Recovery
           </span>
-          <span className="text-[10px] text-neutral-500">
+          <span className="text-sm text-neutral-500">
             {Math.round(todayPercent)}% verified
           </span>
         </div>
