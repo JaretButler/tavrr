@@ -6,6 +6,8 @@ import FamilyOnboarding from './pages/FamilyOnboarding';
 import Home from './pages/Home';
 import Messages from './pages/Messages';
 import PaymentSettings from './pages/PaymentSettings';
+import ScheduleSession from './pages/ScheduleSession';
+import CoachAvailability from './pages/CoachAvailability';
 import __Layout from './Layout.jsx';
 
 
@@ -18,6 +20,8 @@ export const PAGES = {
     "Home": Home,
     "Messages": Messages,
     "PaymentSettings": PaymentSettings,
+    "ScheduleSession": ScheduleSession,
+    "CoachAvailability": CoachAvailability,
 }
 
 export const pagesConfig = {
