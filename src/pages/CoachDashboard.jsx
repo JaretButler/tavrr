@@ -324,7 +324,7 @@ export default function CoachDashboard() {
                 className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start"
               >
                 <Calendar className="w-4 h-4" />
-                <span>Manage Availability</span>
+                <span>Schedule Session</span>
               </Button>
             </Link>
             
@@ -355,7 +355,7 @@ export default function CoachDashboard() {
                 onClick={() => setActiveTab('sessionHistory')}
                 className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
               >
-                Session History
+                Past Sessions
               </Button>
             </div>
           </div>
@@ -562,7 +562,7 @@ export default function CoachDashboard() {
         <TabsContent value="sessionHistory">
           <div className="max-w-4xl">
             <div className="mb-6">
-              <h2 className="text-xl font-medium text-neutral-900 mb-2">Session History</h2>
+              <h2 className="text-xl font-medium text-neutral-900 mb-2">Past Sessions</h2>
               <p className="text-sm text-neutral-500">View all your previous sessions</p>
             </div>
 
