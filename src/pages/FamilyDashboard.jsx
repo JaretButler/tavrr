@@ -302,16 +302,6 @@ export default function FamilyDashboard() {
             </TabsList>
             
             <div className="flex items-center gap-2">
-              <Link to={createPageUrl('ScheduleSession')}>
-                <Button
-                  variant="default"
-                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3]"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Book Session</span>
-                </Button>
-              </Link>
-
               {isLocked && (
                 <Button
                   variant="outline"
