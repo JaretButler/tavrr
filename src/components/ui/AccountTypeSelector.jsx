@@ -17,7 +17,7 @@ export default function AccountTypeSelector({ onSelect }) {
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/f390a923b_tfA4gvqQ0K1ptroztEoWt.png"
               alt="Tavrr"
-              className="h-20"
+              className="h-[88px]"
             />
           </div>
           <h1 className="text-3xl font-light text-neutral-900 mb-3 tracking-tight">
