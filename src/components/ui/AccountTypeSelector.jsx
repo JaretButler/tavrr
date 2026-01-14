@@ -27,7 +27,7 @@ export default function AccountTypeSelector({ onSelect }) {
             Perfectly Designed. For Everyone.
           </p>
           <p className="text-sm text-neutral-400">
-            Effortless scheduling, instant payments, and seamless coordination for instructors and families alike.
+            Effortless scheduling, instant payments, and seamless coordination for instructors, families, athletes, and students alike.
           </p>
         </div>
 
