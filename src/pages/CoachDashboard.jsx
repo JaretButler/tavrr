@@ -284,7 +284,7 @@ export default function CoachDashboard() {
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/b8b585dd5_JXyv2ZNYEizRWxtiY5Iwp.png"
                 alt="Tavrr"
-                className="h-10"
+                className="h-[42.4px]"
               />
               <h1 className="text-xl font-medium text-neutral-900">Instructor Jaret</h1>
             </div>
