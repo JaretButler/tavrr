@@ -338,13 +338,23 @@ export default function CoachDashboard() {
               </Button>
             </div>
 
-            <Button
-              variant="outline"
-              onClick={() => setActiveTab('admin')}
-              className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900"
-            >
-              Admin
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setActiveTab('dashboard')}
+                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1"
+              >
+                <Home className="w-4 h-4 mr-2" />
+                Home
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setActiveTab('admin')}
+                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1"
+              >
+                Admin
+              </Button>
+            </div>
           </div>
 
           <TabsContent value="dashboard">
