@@ -49,7 +49,7 @@ export default function RevenueTicker({ todayVerified, todayProjected, monthlyRe
           <span className="text-[10px] tracking-[0.2em] uppercase text-neutral-400 font-medium">
             Yearly Revenue
           </span>
-          <span className="text-[10px] text-emerald-600 font-medium">
+          <span className="text-sm text-emerald-600 font-medium">
             {Math.round(monthlyPercent)}% of goal
           </span>
         </div>
