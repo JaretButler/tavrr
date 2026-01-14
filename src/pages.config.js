@@ -1,5 +1,4 @@
 import CoachAvailability from './pages/CoachAvailability';
-import CoachDashboard from './pages/CoachDashboard';
 import CoachOnboarding from './pages/CoachOnboarding';
 import Contacts from './pages/Contacts';
 import FamilyDashboard from './pages/FamilyDashboard';
@@ -9,12 +8,12 @@ import Messages from './pages/Messages';
 import PaymentSettings from './pages/PaymentSettings';
 import ScheduleSession from './pages/ScheduleSession';
 import TestOnboarding from './pages/TestOnboarding';
+import InstructorDashboard from './pages/InstructorDashboard';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "CoachAvailability": CoachAvailability,
-    "CoachDashboard": CoachDashboard,
     "CoachOnboarding": CoachOnboarding,
     "Contacts": Contacts,
     "FamilyDashboard": FamilyDashboard,
@@ -24,6 +23,7 @@ export const PAGES = {
     "PaymentSettings": PaymentSettings,
     "ScheduleSession": ScheduleSession,
     "TestOnboarding": TestOnboarding,
+    "InstructorDashboard": InstructorDashboard,
 }
 
 export const pagesConfig = {

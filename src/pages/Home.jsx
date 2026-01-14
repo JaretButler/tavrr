@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
 import AccountTypeSelector from '@/components/ui/AccountTypeSelector';
-import CoachDashboard from './CoachDashboard';
+import InstructorDashboard from './InstructorDashboard';
 import FamilyDashboard from './FamilyDashboard';
 import FamilyOnboarding from './FamilyOnboarding';
 
@@ -115,7 +115,7 @@ export default function Home() {
 
   // Render appropriate dashboard
   if (accountType === 'coach' || coachProfile) {
-    return <CoachDashboard />;
+    return <InstructorDashboard />;
   }
 
   if (accountType === 'family' || familyProfile) {

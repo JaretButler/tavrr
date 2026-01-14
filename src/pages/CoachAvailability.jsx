@@ -26,7 +26,7 @@ export default function CoachAvailability() {
       <header className="bg-white border-b border-neutral-100">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
-            <Link to={createPageUrl('CoachDashboard')}>
+            <Link to={createPageUrl('InstructorDashboard')}>
               <Button variant="ghost" size="icon">
                 <ArrowLeft className="w-5 h-5" />
               </Button>

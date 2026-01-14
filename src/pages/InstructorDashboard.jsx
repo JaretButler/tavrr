@@ -21,7 +21,7 @@ import ConversationList from '@/components/messaging/ConversationList';
 import PaymentHistory from '@/components/coach/PaymentHistory';
 import AddSessionModal from '@/components/coach/AddSessionModal';
 
-export default function CoachDashboard() {
+export default function InstructorDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showManualOverride, setShowManualOverride] = useState(false);
   const [selectedSession, setSelectedSession] = useState(null);
