@@ -371,7 +371,7 @@ export default function FamilyDashboard() {
                   ))}
                 </div>
               ) : selectedDateSessions.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
+                <div className="bg-white rounded-2xl border border-neutral-100 p-8 text-center">
                   <p className="text-neutral-400">No training scheduled</p>
                 </div>
               ) : (
