@@ -21,6 +21,8 @@ import ConversationList from '@/components/messaging/ConversationList';
 import PaymentHistory from '@/components/coach/PaymentHistory';
 import AddSessionModal from '@/components/coach/AddSessionModal';
 import ProfileSettingsModal from '@/components/settings/ProfileSettingsModal';
+import PublishOpenSlotModal from '@/components/coach/PublishOpenSlotModal';
+import OpenSlotsManager from '@/components/coach/OpenSlotsManager';
 
 export default function CoachDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -32,6 +34,7 @@ export default function CoachDashboard() {
   const [showTodaySessionsModal, setShowTodaySessionsModal] = useState(false);
   const [showAddSessionModal, setShowAddSessionModal] = useState(false);
   const [showProfileSettings, setShowProfileSettings] = useState(false);
+  const [showPublishSlot, setShowPublishSlot] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -548,10 +551,11 @@ export default function CoachDashboard() {
 
         <TabsContent value="admin">
           <Tabs defaultValue="payments" className="w-full">
-            <TabsList className="mb-6">
-              <TabsTrigger value="payments">Payment History</TabsTrigger>
-              <TabsTrigger value="sessionHistory">Past Sessions</TabsTrigger>
-            </TabsList>
+              <TabsList className="mb-6">
+                <TabsTrigger value="payments">Payment History</TabsTrigger>
+                <TabsTrigger value="sessionHistory">Past Sessions</TabsTrigger>
+                <TabsTrigger value="openSlots">Open Slots</TabsTrigger>
+              </TabsList>
 
             <TabsContent value="payments">
               <div className="max-w-4xl">
@@ -573,6 +577,26 @@ export default function CoachDashboard() {
                     }
                   }}
                 />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="openSlots">
+              <div className="max-w-4xl">
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-xl font-medium text-neutral-900 mb-2">Open Slots</h2>
+                    <p className="text-sm text-neutral-500">Publish available times for families to claim</p>
+                  </div>
+                  <Button
+                    onClick={() => setShowPublishSlot(true)}
+                    className="bg-[#0066CC] hover:bg-[#0052A3]"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Publish Slot
+                  </Button>
+                </div>
+
+                <OpenSlotsManager coachId={coach?.id} />
               </div>
             </TabsContent>
 
