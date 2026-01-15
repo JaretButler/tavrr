@@ -21,6 +21,7 @@ import SessionsCompletedCard from '@/components/family/SessionsCompletedCard';
 import SessionHistoryModal from '@/components/family/SessionHistoryModal';
 import NewMessageModal from '@/components/messaging/NewMessageModal';
 import ProfileSettingsModal from '@/components/settings/ProfileSettingsModal';
+import RequestSessionModal from '@/components/family/RequestSessionModal';
 
 export default function FamilyDashboard() {
   const [selectedAthleteId, setSelectedAthleteId] = useState(null);
@@ -31,6 +32,7 @@ export default function FamilyDashboard() {
   const [showSessionHistory, setShowSessionHistory] = useState(false);
   const [showNewMessage, setShowNewMessage] = useState(false);
   const [showProfileSettings, setShowProfileSettings] = useState(false);
+  const [showRequestSession, setShowRequestSession] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -315,6 +317,13 @@ export default function FamilyDashboard() {
             </TabsList>
             
             <div className="flex items-center gap-2">
+              <Button
+                onClick={() => setShowRequestSession(true)}
+                className="bg-[#0066CC] hover:bg-[#0052A3] h-10 px-6"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Request Session
+              </Button>
               {isLocked && (
                 <Button
                   variant="outline"
@@ -591,6 +600,19 @@ export default function FamilyDashboard() {
         profileType="family"
         onDeleteProfile={() => deleteProfileMutation.mutate()}
         isLoading={deleteProfileMutation.isPending}
+      />
+
+      {/* Request Session Modal */}
+      <RequestSessionModal
+        isOpen={showRequestSession}
+        onClose={() => setShowRequestSession(false)}
+        coaches={coaches}
+        athletes={athletes}
+        family={family}
+        onSuccess={() => {
+          queryClient.invalidateQueries({ queryKey: ['messages'] });
+          setActiveTab('messages');
+        }}
       />
     </div>
   );
