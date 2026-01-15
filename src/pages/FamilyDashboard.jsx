@@ -440,7 +440,7 @@ export default function FamilyDashboard() {
                     ))}
                   </div>
                 ) : upcomingSessions.length === 0 ? (
-                  <p className="text-sm text-neutral-400 text-center py-8">
+                  <p className="text-sm text-neutral-400 text-center py-6">
                     No upcoming sessions
                   </p>
                 ) : (
