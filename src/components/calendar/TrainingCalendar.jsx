@@ -41,7 +41,7 @@ export default function TrainingCalendar({ sessions = [], onDateSelect, selected
               <CalendarIcon className="w-5 h-5 text-neutral-600" />
             </div>
             <div>
-              <h3 className="font-medium text-neutral-900">Training Calendar</h3>
+              <h3 className="font-medium text-neutral-900">Session Calendar</h3>
             </div>
           </div>
           
