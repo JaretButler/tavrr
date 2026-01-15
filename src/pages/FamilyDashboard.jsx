@@ -328,13 +328,13 @@ export default function FamilyDashboard() {
             </TabsList>
             
             <div className="flex items-center gap-2">
-              <button
+              <Button
                 onClick={() => setShowRequestSession(true)}
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-32 bg-transparent hover:bg-neutral-100 text-neutral-600 hover:text-neutral-900"
+                className="bg-[#0066CC] hover:bg-[#0052A3] h-10 w-32 text-sm"
               >
                 <Plus className="w-4 h-4 -mr-2" />
                 Request Session
-              </button>
+              </Button>
               {isLocked && (
                 <Button
                   variant="outline"
