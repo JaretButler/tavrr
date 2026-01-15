@@ -306,7 +306,7 @@ export default function FamilyDashboard() {
       <main className="max-w-6xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="mb-6 space-y-3">
-            <TabsList className="h-10">
+            <TabsList className="h-10 bg-white">
               <TabsTrigger value="dashboard" className="h-10 w-32">Home</TabsTrigger>
               <TabsTrigger value="messages" className="relative h-10 w-32">
                 Messages
