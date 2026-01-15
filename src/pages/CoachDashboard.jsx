@@ -437,28 +437,7 @@ export default function CoachDashboard() {
               )}
             </motion.div>
 
-            {/* Revenue Ticker */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl border border-neutral-100 p-6"
-            >
-              {isLoading ? (
-                <div className="space-y-4">
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="h-12 w-48" />
-                  <Skeleton className="h-2 w-full" />
-                </div>
-              ) : (
-                <RevenueTicker
-                  todayVerified={todayVerifiedRevenue}
-                  todayProjected={todayProjectedRevenue}
-                  monthlyRecovered={monthlyRecovered}
-                  monthlyGoal={coach?.monthly_revenue_goal || 10000}
-                />
-              )}
-            </motion.div>
+
 
             {/* Handshake Feed */}
             <motion.div
@@ -567,12 +546,41 @@ export default function CoachDashboard() {
         </TabsContent>
 
         <TabsContent value="admin">
-          <Tabs defaultValue="payments" className="w-full">
+          <Tabs defaultValue="revenue" className="w-full">
               <TabsList className="mb-6">
+                <TabsTrigger value="revenue">Revenue</TabsTrigger>
                 <TabsTrigger value="payments">Payment History</TabsTrigger>
                 <TabsTrigger value="sessionHistory">Past Sessions</TabsTrigger>
                 <TabsTrigger value="openSlots">Open Slots</TabsTrigger>
               </TabsList>
+
+            <TabsContent value="revenue">
+              <div className="max-w-4xl">
+                <div className="mb-6">
+                  <h2 className="text-xl font-medium text-neutral-900 mb-2">Revenue Overview</h2>
+                  <p className="text-sm text-neutral-500">Track your daily and monthly revenue performance</p>
+                </div>
+
+                {isLoading ? (
+                  <div className="bg-white rounded-2xl border border-neutral-100 p-6">
+                    <div className="space-y-4">
+                      <Skeleton className="h-4 w-32" />
+                      <Skeleton className="h-12 w-48" />
+                      <Skeleton className="h-2 w-full" />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-white rounded-2xl border border-neutral-100 p-6">
+                    <RevenueTicker
+                      todayVerified={todayVerifiedRevenue}
+                      todayProjected={todayProjectedRevenue}
+                      monthlyRecovered={monthlyRecovered}
+                      monthlyGoal={coach?.monthly_revenue_goal || 10000}
+                    />
+                  </div>
+                )}
+              </div>
+            </TabsContent>
 
             <TabsContent value="payments">
               <div className="max-w-4xl">
