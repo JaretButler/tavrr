@@ -20,6 +20,7 @@ import MessageInput from '@/components/messaging/MessageInput';
 import ConversationList from '@/components/messaging/ConversationList';
 import PaymentHistory from '@/components/coach/PaymentHistory';
 import AddSessionModal from '@/components/coach/AddSessionModal';
+import ProfileSettingsModal from '@/components/settings/ProfileSettingsModal';
 
 export default function CoachDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -30,6 +31,7 @@ export default function CoachDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showTodaySessionsModal, setShowTodaySessionsModal] = useState(false);
   const [showAddSessionModal, setShowAddSessionModal] = useState(false);
+  const [showProfileSettings, setShowProfileSettings] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -203,6 +205,17 @@ export default function CoachDashboard() {
     },
   });
 
+  const deleteProfileMutation = useMutation({
+    mutationFn: async () => {
+      await base44.entities.Coach.delete(coach.id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['coach'] });
+      queryClient.invalidateQueries({ queryKey: ['coachProfile'] });
+      window.location.href = createPageUrl('Home');
+    },
+  });
+
   // Build conversations from messages
   const conversations = React.useMemo(() => {
     if (!allMessages.length || !coach?.id) return [];
@@ -302,7 +315,7 @@ export default function CoachDashboard() {
                 <Bell className="w-5 h-5 text-neutral-500" />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-[#0066CC] rounded-full" />
               </Button>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" onClick={() => setShowProfileSettings(true)}>
                 <Settings className="w-5 h-5 text-neutral-500" />
               </Button>
             </div>
@@ -636,6 +649,15 @@ export default function CoachDashboard() {
         coach={coach}
         athletes={athletes}
         onSuccess={() => queryClient.invalidateQueries({ queryKey: ['sessions'] })}
+      />
+
+      {/* Profile Settings Modal */}
+      <ProfileSettingsModal
+        isOpen={showProfileSettings}
+        onClose={() => setShowProfileSettings(false)}
+        profileType="coach"
+        onDeleteProfile={() => deleteProfileMutation.mutate()}
+        isLoading={deleteProfileMutation.isPending}
       />
 
       {/* Today's Sessions Modal */}
