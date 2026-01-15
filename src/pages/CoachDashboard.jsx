@@ -684,6 +684,14 @@ export default function CoachDashboard() {
         isLoading={deleteProfileMutation.isPending}
       />
 
+      {/* Publish Open Slot Modal */}
+      <PublishOpenSlotModal
+        isOpen={showPublishSlot}
+        onClose={() => setShowPublishSlot(false)}
+        coach={coach}
+        onSuccess={() => queryClient.invalidateQueries({ queryKey: ['openSlots'] })}
+      />
+
       {/* Today's Sessions Modal */}
       {showTodaySessionsModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
