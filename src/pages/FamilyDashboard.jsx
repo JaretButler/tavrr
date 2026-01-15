@@ -331,32 +331,12 @@ export default function FamilyDashboard() {
 
           <TabsContent value="dashboard">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Balance, Today's Training & Upcoming */}
+          {/* Left Column - Today's Training, Balance & Upcoming */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Balance Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              {isLoading ? (
-                <Skeleton className="h-48 w-full rounded-2xl" />
-              ) : (
-                <BalanceCard
-                  balance={family?.current_balance || 0}
-                  onSettle={handleSettle}
-                  isSettling={isSettling}
-                  biometricEnabled={family?.biometric_enabled}
-                  paymentMethods={family?.payment_methods || []}
-                  coachName={coachName}
-                />
-              )}
-            </motion.div>
-
             {/* Today's Training */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
@@ -392,6 +372,26 @@ export default function FamilyDashboard() {
                     );
                   })}
                 </div>
+              )}
+            </motion.div>
+
+            {/* Balance Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              {isLoading ? (
+                <Skeleton className="h-48 w-full rounded-2xl" />
+              ) : (
+                <BalanceCard
+                  balance={family?.current_balance || 0}
+                  onSettle={handleSettle}
+                  isSettling={isSettling}
+                  biometricEnabled={family?.biometric_enabled}
+                  paymentMethods={family?.payment_methods || []}
+                  coachName={coachName}
+                />
               )}
             </motion.div>
 
