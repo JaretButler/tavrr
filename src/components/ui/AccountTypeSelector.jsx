@@ -35,10 +35,11 @@ export default function AccountTypeSelector({ onSelect }) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onSelect('coach')}
-            className={`bg-white border rounded-2xl p-8 text-left hover:border-[#0066CC] hover:shadow-lg transition-all group ${
-              selectedType === 'coach' ? 'border-[#0066CC] shadow-lg' : 'border-neutral-200'
-            }`}
+            onClick={() => {
+              setSelectedType('coach');
+              onSelect('coach');
+            }}
+            className="bg-white border rounded-2xl p-8 text-left hover:border-[#0066CC] hover:shadow-lg transition-all group border-neutral-200"
           >
             <div className="flex items-start gap-5">
               <div className="p-4 bg-neutral-100 rounded-xl group-hover:bg-blue-50 transition-colors">
