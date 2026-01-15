@@ -7,7 +7,7 @@ import { format, addDays } from 'date-fns';
 import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 
-export default function RequestSessionModal({ isOpen, onClose, coaches, athletes, family, onSuccess }) {
+export default function RequestSessionModal({ isOpen, onClose, coaches, athletes, family, onSuccess, embedded = false }) {
   const [selectedCoach, setSelectedCoach] = useState('');
   const [selectedAthlete, setSelectedAthlete] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
