@@ -20,6 +20,7 @@ import ConversationList from '@/components/messaging/ConversationList';
 import SessionsCompletedCard from '@/components/family/SessionsCompletedCard';
 import SessionHistoryModal from '@/components/family/SessionHistoryModal';
 import NewMessageModal from '@/components/messaging/NewMessageModal';
+import ProfileSettingsModal from '@/components/settings/ProfileSettingsModal';
 
 export default function FamilyDashboard() {
   const [selectedAthleteId, setSelectedAthleteId] = useState(null);
@@ -29,6 +30,7 @@ export default function FamilyDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showSessionHistory, setShowSessionHistory] = useState(false);
   const [showNewMessage, setShowNewMessage] = useState(false);
+  const [showProfileSettings, setShowProfileSettings] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -217,6 +219,17 @@ export default function FamilyDashboard() {
     },
   });
 
+  const deleteProfileMutation = useMutation({
+    mutationFn: async () => {
+      await base44.entities.Family.delete(family.id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['family'] });
+      queryClient.invalidateQueries({ queryKey: ['familyProfile'] });
+      window.location.href = createPageUrl('Home');
+    },
+  });
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [conversationMessages]);
@@ -278,7 +291,7 @@ export default function FamilyDashboard() {
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="w-5 h-5 text-neutral-500" />
               </Button>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" onClick={() => setShowProfileSettings(true)}>
                 <Settings className="w-5 h-5 text-neutral-500" />
               </Button>
             </div>
@@ -569,6 +582,15 @@ export default function FamilyDashboard() {
         coaches={coaches}
         athletes={athletes}
         onSelect={handleNewConversation}
+      />
+
+      {/* Profile Settings Modal */}
+      <ProfileSettingsModal
+        isOpen={showProfileSettings}
+        onClose={() => setShowProfileSettings(false)}
+        profileType="family"
+        onDeleteProfile={() => deleteProfileMutation.mutate()}
+        isLoading={deleteProfileMutation.isPending}
       />
     </div>
   );
