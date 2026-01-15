@@ -317,7 +317,6 @@ export default function FamilyDashboard() {
           <div className="mb-6 space-y-3">
             <TabsList className="h-10 bg-white">
               <TabsTrigger value="dashboard" className="h-10 w-32">Home</TabsTrigger>
-              <TabsTrigger value="available" className="h-10 w-40">Available Sessions</TabsTrigger>
               <TabsTrigger value="messages" className="h-10 w-32">
                 Messages
                 {unreadMessages.length > 0 && (
@@ -335,6 +334,13 @@ export default function FamilyDashboard() {
               >
                 <Plus className="w-4 h-4 -mr-2" />
                 Request Session
+              </Button>
+              <Button
+                onClick={() => setActiveTab('available')}
+                variant={activeTab === 'available' ? 'default' : 'outline'}
+                className={activeTab === 'available' ? 'bg-[#0066CC] hover:bg-[#0052A3] h-10 text-sm' : 'h-10 text-sm'}
+              >
+                Available Sessions
               </Button>
               {isLocked && (
                 <Button
