@@ -330,7 +330,8 @@ export default function FamilyDashboard() {
             <div className="flex items-center gap-2">
               <Button
                 onClick={() => setShowRequestSession(true)}
-                className="bg-neutral-200 hover:bg-neutral-300 text-neutral-700 h-10 w-32 text-sm"
+                variant="ghost"
+                className="h-10 w-32 text-sm font-medium bg-transparent hover:bg-neutral-100"
               >
                 <Plus className="w-4 h-4 -mr-2" />
                 Request Session
