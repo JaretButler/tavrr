@@ -84,6 +84,107 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
 
   const canSubmit = selectedCoach && selectedAthlete && selectedDate && selectedTime;
 
+  if (embedded) {
+    return (
+      <div className="bg-white rounded-2xl border border-neutral-100 p-6">
+        <div className="space-y-4">
+          {/* Coach Selection */}
+          <div>
+            <label className="text-sm font-medium text-neutral-700 mb-2 block">
+              Select Coach
+            </label>
+            <Select value={selectedCoach} onValueChange={setSelectedCoach}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choose a coach..." />
+              </SelectTrigger>
+              <SelectContent>
+                {coaches.map(coach => (
+                  <SelectItem key={coach.id} value={coach.id}>
+                    {coach.display_name} {coach.sport_discipline && `• ${coach.sport_discipline}`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Athlete Selection */}
+          <div>
+            <label className="text-sm font-medium text-neutral-700 mb-2 block">
+              Select Athlete
+            </label>
+            <Select value={selectedAthlete} onValueChange={setSelectedAthlete}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choose athlete..." />
+              </SelectTrigger>
+              <SelectContent>
+                {athletes.map(athlete => (
+                  <SelectItem key={athlete.id} value={athlete.id}>
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: athlete.avatar_color }}
+                      />
+                      {athlete.name}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Date Selection */}
+          <div>
+            <label className="text-sm font-medium text-neutral-700 mb-2 block flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              Suggested Date
+            </label>
+            <Select value={selectedDate} onValueChange={setSelectedDate}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choose a date..." />
+              </SelectTrigger>
+              <SelectContent>
+                {dateOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Time Selection */}
+          <div>
+            <label className="text-sm font-medium text-neutral-700 mb-2 block flex items-center gap-2">
+              <Clock className="w-4 h-4" />
+              Suggested Time
+            </label>
+            <Select value={selectedTime} onValueChange={setSelectedTime}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choose a time..." />
+              </SelectTrigger>
+              <SelectContent className="max-h-60">
+                {timeOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Submit Button */}
+          <Button
+            onClick={() => requestMutation.mutate()}
+            disabled={!canSubmit || requestMutation.isPending}
+            className="w-full bg-[#0066CC] hover:bg-[#0052A3]"
+          >
+            {requestMutation.isPending ? 'Sending...' : 'Send Request'}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (!isOpen) return null;
 
   return (
