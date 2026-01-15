@@ -376,7 +376,7 @@ export default function FamilyDashboard() {
             >
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
-                  {isToday(selectedDate) ? "Today's Training" : format(selectedDate, 'EEEE, MMM d')}
+                  {isToday(selectedDate) ? "Today's Session" : format(selectedDate, 'EEEE, MMM d')}
                 </span>
               </div>
 
