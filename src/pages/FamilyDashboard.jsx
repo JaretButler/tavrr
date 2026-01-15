@@ -323,7 +323,7 @@ export default function FamilyDashboard() {
                 onClick={() => setShowRequestSession(true)}
                 className="bg-[#0066CC] hover:bg-[#0052A3] h-10 w-32 text-sm"
               >
-                <Plus className="w-4 h-4 mr-0.5" />
+                <Plus className="w-4 h-4" />
                 Request Session
               </Button>
               {isLocked && (
