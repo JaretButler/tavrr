@@ -33,6 +33,7 @@ export default function FamilyDashboard() {
   const [showNewMessage, setShowNewMessage] = useState(false);
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showRequestSession, setShowRequestSession] = useState(false);
+  const [selectedCoachForSlots, setSelectedCoachForSlots] = useState(null);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -76,6 +77,14 @@ export default function FamilyDashboard() {
     queryKey: ['unreadMessages', family?.id],
     queryFn: () => base44.entities.Message.filter({ receiver_id: family?.id, read: false }),
     enabled: !!family?.id,
+  });
+
+  const { data: openSlots = [] } = useQuery({
+    queryKey: ['openSlots', selectedCoachForSlots],
+    queryFn: () => selectedCoachForSlots 
+      ? base44.entities.OpenSlot.filter({ coach_id: selectedCoachForSlots, status: 'available' }, '-scheduled_time')
+      : Promise.resolve([]),
+    enabled: !!selectedCoachForSlots,
   });
 
   // Set first athlete as selected by default
@@ -316,6 +325,7 @@ export default function FamilyDashboard() {
                   </span>
                 )}
               </TabsTrigger>
+              <TabsTrigger value="available" className="h-10 w-40">Available Sessions</TabsTrigger>
             </TabsList>
             
             <div className="flex items-center gap-2">
@@ -574,8 +584,112 @@ export default function FamilyDashboard() {
             </div>
           </div>
         </TabsContent>
-      </Tabs>
-      </main>
+
+        <TabsContent value="available">
+          <div className="space-y-6">
+            {/* Coach Selector */}
+            <div className="bg-white rounded-2xl border border-neutral-100 p-6">
+              <label className="block text-sm font-medium text-neutral-700 mb-3">
+                Select Instructor
+              </label>
+              <select
+                value={selectedCoachForSlots || ''}
+                onChange={(e) => setSelectedCoachForSlots(e.target.value || null)}
+                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066CC]"
+              >
+                <option value="">Choose an instructor...</option>
+                {coaches.map(coach => (
+                  <option key={coach.id} value={coach.id}>
+                    {coach.display_name} {coach.sport_discipline && `- ${coach.sport_discipline}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Available Slots */}
+            {selectedCoachForSlots && (
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
+                    Available Sessions
+                  </span>
+                  <span className="text-xs text-neutral-400">
+                    {openSlots.length} slot{openSlots.length !== 1 ? 's' : ''} available
+                  </span>
+                </div>
+
+                {openSlots.length === 0 ? (
+                  <div className="bg-white rounded-2xl border border-neutral-100 p-8 text-center">
+                    <p className="text-neutral-400">No available sessions at this time</p>
+                  </div>
+                ) : (
+                  <div className="grid gap-4">
+                    {openSlots.map(slot => {
+                      const coach = coaches.find(c => c.id === slot.coach_id);
+                      const slotDate = new Date(slot.scheduled_time);
+
+                      return (
+                        <motion.div
+                          key={slot.id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="bg-white rounded-2xl border border-neutral-100 p-6 hover:border-[#0066CC] transition-colors"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-3">
+                                <div className="w-10 h-10 rounded-full bg-[#0066CC] flex items-center justify-center text-white font-medium">
+                                  {coach?.display_name?.charAt(0)}
+                                </div>
+                                <div>
+                                  <h3 className="text-sm font-medium text-neutral-900">
+                                    {coach?.display_name}
+                                  </h3>
+                                  <p className="text-xs text-neutral-400">
+                                    {format(slotDate, 'EEEE, MMM d')} · {format(slotDate, 'h:mm a')}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-4 text-xs text-neutral-500">
+                                {slot.facility_name && (
+                                  <span className="flex items-center gap-1">
+                                    <Calendar className="w-3 h-3" />
+                                    {slot.facility_name}
+                                  </span>
+                                )}
+                                <span>{slot.duration_minutes} min</span>
+                                {slot.session_type && (
+                                  <span className="capitalize">{slot.session_type}</span>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="text-right">
+                              <div className="text-lg font-semibold text-neutral-900 mb-2">
+                                ${slot.rate}
+                              </div>
+                              <Button
+                                className="bg-[#0066CC] hover:bg-[#0052A3] text-xs h-8"
+                                onClick={() => {
+                                  // TODO: Implement booking flow
+                                }}
+                              >
+                                Book Now
+                              </Button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </TabsContent>
+        </Tabs>
+        </main>
 
       {/* Session History Modal */}
       <SessionHistoryModal
