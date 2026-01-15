@@ -308,7 +308,7 @@ export default function FamilyDashboard() {
           <div className="mb-6 space-y-3">
             <TabsList className="h-10 bg-white">
               <TabsTrigger value="dashboard" className="h-10 w-32">Home</TabsTrigger>
-              <TabsTrigger value="messages" className="relative h-10 w-32">
+              <TabsTrigger value="messages" className="h-10 w-32">
                 Messages
                 {unreadMessages.length > 0 && (
                   <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-[#0066CC] rounded-full">
