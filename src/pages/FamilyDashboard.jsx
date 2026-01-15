@@ -303,7 +303,7 @@ export default function FamilyDashboard() {
 
       <main className="max-w-6xl mx-auto px-6 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="flex items-center justify-between mb-6">
+          <div className="mb-6 space-y-3">
             <TabsList className="h-10">
               <TabsTrigger value="dashboard" className="h-10 w-32">Home</TabsTrigger>
               <TabsTrigger value="messages" className="relative h-10 w-32">
@@ -319,7 +319,7 @@ export default function FamilyDashboard() {
             <div className="flex items-center gap-2">
               <Button
                 onClick={() => setShowRequestSession(true)}
-                className="bg-[#0066CC] hover:bg-[#0052A3] h-10 px-6"
+                className="bg-[#0066CC] hover:bg-[#0052A3] h-10 px-6 flex-1"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Request Session
@@ -329,7 +329,7 @@ export default function FamilyDashboard() {
                   variant="outline"
                   onClick={() => sendPaymentReminderMutation.mutate()}
                   disabled={sendPaymentReminderMutation.isPending}
-                  className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5 h-10 px-6"
+                  className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5 h-10 px-6 flex-1"
                 >
                   <DollarSign className="w-4 h-4" />
                   <span>Send Payment Reminder</span>
