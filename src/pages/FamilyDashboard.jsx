@@ -315,15 +315,6 @@ export default function FamilyDashboard() {
                     {unreadMessages.length}
                   </span>
                 )}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowNewMessage(true);
-                  }}
-                  className="absolute -top-1 -right-1 w-5 h-5 bg-[#0066CC] rounded-full flex items-center justify-center text-white hover:bg-[#0052A3] transition-colors"
-                >
-                  <Plus className="w-3 h-3" />
-                </button>
               </TabsTrigger>
             </TabsList>
             
