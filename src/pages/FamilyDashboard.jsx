@@ -317,6 +317,7 @@ export default function FamilyDashboard() {
           <div className="mb-6 space-y-3">
             <TabsList className="h-10 bg-white">
               <TabsTrigger value="dashboard" className="h-10 w-32">Home</TabsTrigger>
+              <TabsTrigger value="available" className="h-10 w-40">Available Sessions</TabsTrigger>
               <TabsTrigger value="messages" className="h-10 w-32">
                 Messages
                 {unreadMessages.length > 0 && (
@@ -325,7 +326,6 @@ export default function FamilyDashboard() {
                   </span>
                 )}
               </TabsTrigger>
-              <TabsTrigger value="available" className="h-10 w-40">Available Sessions</TabsTrigger>
             </TabsList>
             
             <div className="flex items-center gap-2">
