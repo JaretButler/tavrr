@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, DollarSign, MapPin } from 'lucide-react';
+import { X, Calendar, Clock, DollarSign, MapPin, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -17,20 +17,42 @@ export default function PublishOpenSlotModal({ isOpen, onClose, coach, onSuccess
   const [facilityName, setFacilityName] = useState('');
   const [sessionType, setSessionType] = useState('skill');
   const [description, setDescription] = useState('');
+  const [isRecurring, setIsRecurring] = useState(false);
+  const [recurrenceCount, setRecurrenceCount] = useState('4');
 
   const publishMutation = useMutation({
     mutationFn: async () => {
       const dateTime = new Date(`${selectedDate}T${selectedTime}`);
       
-      await base44.entities.OpenSlot.create({
-        coach_id: coach.id,
-        scheduled_time: dateTime.toISOString(),
-        duration_minutes: parseInt(duration),
-        rate: parseFloat(rate),
-        facility_name: facilityName,
-        session_type: sessionType,
-        description: description || undefined,
-      });
+      if (isRecurring) {
+        // Create multiple slots (weekly recurrence)
+        const slots = [];
+        const count = parseInt(recurrenceCount);
+        for (let i = 0; i < count; i++) {
+          const slotDate = new Date(dateTime);
+          slotDate.setDate(slotDate.getDate() + (i * 7)); // Add weeks
+          slots.push({
+            coach_id: coach.id,
+            scheduled_time: slotDate.toISOString(),
+            duration_minutes: parseInt(duration),
+            rate: parseFloat(rate),
+            facility_name: facilityName,
+            session_type: sessionType,
+            description: description || undefined,
+          });
+        }
+        await base44.entities.OpenSlot.bulkCreate(slots);
+      } else {
+        await base44.entities.OpenSlot.create({
+          coach_id: coach.id,
+          scheduled_time: dateTime.toISOString(),
+          duration_minutes: parseInt(duration),
+          rate: parseFloat(rate),
+          facility_name: facilityName,
+          session_type: sessionType,
+          description: description || undefined,
+        });
+      }
     },
     onSuccess: () => {
       onSuccess?.();
@@ -47,6 +69,8 @@ export default function PublishOpenSlotModal({ isOpen, onClose, coach, onSuccess
     setFacilityName('');
     setSessionType('skill');
     setDescription('');
+    setIsRecurring(false);
+    setRecurrenceCount('4');
   };
 
   const handleClose = () => {
@@ -208,6 +232,39 @@ export default function PublishOpenSlotModal({ isOpen, onClose, coach, onSuccess
                 placeholder="Add any details about this session..."
                 className="h-20"
               />
+            </div>
+
+            {/* Recurring Option */}
+            <div className="border-t border-neutral-100 pt-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isRecurring}
+                  onChange={(e) => setIsRecurring(e.target.checked)}
+                  className="w-4 h-4 rounded border-neutral-300 text-[#0066CC] focus:ring-[#0066CC]"
+                />
+                <span className="text-sm font-medium text-neutral-700">Make this recurring (weekly)</span>
+              </label>
+              
+              {isRecurring && (
+                <div className="mt-3">
+                  <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                    Number of weeks
+                  </label>
+                  <Select value={recurrenceCount} onValueChange={setRecurrenceCount}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="2">2 weeks</SelectItem>
+                      <SelectItem value="4">4 weeks</SelectItem>
+                      <SelectItem value="6">6 weeks</SelectItem>
+                      <SelectItem value="8">8 weeks</SelectItem>
+                      <SelectItem value="12">12 weeks</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
 
             {/* Actions */}

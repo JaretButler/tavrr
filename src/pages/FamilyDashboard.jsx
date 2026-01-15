@@ -22,6 +22,7 @@ import SessionHistoryModal from '@/components/family/SessionHistoryModal';
 import NewMessageModal from '@/components/messaging/NewMessageModal';
 import ProfileSettingsModal from '@/components/settings/ProfileSettingsModal';
 import RequestSessionModal from '@/components/family/RequestSessionModal';
+import NotificationPanel from '@/components/notifications/NotificationPanel';
 
 export default function FamilyDashboard() {
   const [selectedAthleteId, setSelectedAthleteId] = useState(null);
@@ -34,6 +35,7 @@ export default function FamilyDashboard() {
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showRequestSession, setShowRequestSession] = useState(false);
   const [availableSubTab, setAvailableSubTab] = useState('request');
+  const [showNotifications, setShowNotifications] = useState(false);
   const [selectedCoachForSlots, setSelectedCoachForSlots] = useState(null);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
@@ -87,6 +89,20 @@ export default function FamilyDashboard() {
       : Promise.resolve([]),
     enabled: !!selectedCoachForSlots,
   });
+
+  const { data: bookingRequests = [] } = useQuery({
+    queryKey: ['bookingRequests', family?.id],
+    queryFn: () => base44.entities.BookingRequest.filter({ family_id: family?.id }, '-created_date'),
+    enabled: !!family?.id,
+  });
+
+  const { data: notifications = [] } = useQuery({
+    queryKey: ['notifications', user?.email],
+    queryFn: () => base44.entities.Notification.filter({ user_id: user?.email }, '-created_date'),
+    enabled: !!user?.email,
+  });
+
+  const unreadNotifications = notifications.filter(n => !n.read);
 
   // Set first athlete as selected by default
   useEffect(() => {
@@ -302,8 +318,16 @@ export default function FamilyDashboard() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" className="relative">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative"
+                onClick={() => setShowNotifications(true)}
+              >
                 <Bell className="w-5 h-5 text-neutral-500" />
+                {unreadNotifications.length > 0 && (
+                  <span className="absolute top-2 right-2 w-2 h-2 bg-[#0066CC] rounded-full" />
+                )}
               </Button>
               <Button variant="ghost" size="icon" onClick={() => setShowProfileSettings(true)}>
                 <Settings className="w-5 h-5 text-neutral-500" />
@@ -495,6 +519,7 @@ export default function FamilyDashboard() {
                 sessions={filteredSessions}
                 selectedDate={selectedDate}
                 onDateSelect={setSelectedDate}
+                bookingRequests={bookingRequests}
               />
             </motion.div>
             </div>

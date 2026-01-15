@@ -23,6 +23,7 @@ import AddSessionModal from '@/components/coach/AddSessionModal';
 import ProfileSettingsModal from '@/components/settings/ProfileSettingsModal';
 import PublishOpenSlotModal from '@/components/coach/PublishOpenSlotModal';
 import OpenSlotsManager from '@/components/coach/OpenSlotsManager';
+import NotificationPanel from '@/components/notifications/NotificationPanel';
 
 export default function CoachDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -35,6 +36,7 @@ export default function CoachDashboard() {
   const [showAddSessionModal, setShowAddSessionModal] = useState(false);
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showPublishSlot, setShowPublishSlot] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -89,6 +91,14 @@ export default function CoachDashboard() {
     queryKey: ['allSessions'],
     queryFn: () => base44.entities.Session.list(),
   });
+
+  const { data: notifications = [] } = useQuery({
+    queryKey: ['notifications', user?.email],
+    queryFn: () => base44.entities.Notification.filter({ user_id: user?.email }, '-created_date'),
+    enabled: !!user?.email,
+  });
+
+  const unreadNotifications = notifications.filter(n => !n.read);
 
   // Subscribe to real-time updates
   useEffect(() => {
@@ -314,9 +324,16 @@ export default function CoachDashboard() {
                 </Button>
               </Link>
 
-              <Button variant="ghost" size="icon" className="relative">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative"
+                onClick={() => setShowNotifications(true)}
+              >
                 <Bell className="w-5 h-5 text-neutral-500" />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-[#0066CC] rounded-full" />
+                {unreadNotifications.length > 0 && (
+                  <span className="absolute top-2 right-2 w-2 h-2 bg-[#0066CC] rounded-full" />
+                )}
               </Button>
               <Button variant="ghost" size="icon" onClick={() => setShowProfileSettings(true)}>
                 <Settings className="w-5 h-5 text-neutral-500" />
@@ -690,6 +707,13 @@ export default function CoachDashboard() {
         onClose={() => setShowPublishSlot(false)}
         coach={coach}
         onSuccess={() => queryClient.invalidateQueries({ queryKey: ['openSlots'] })}
+      />
+
+      {/* Notification Panel */}
+      <NotificationPanel
+        userId={user?.email}
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
       />
 
       {/* Today's Sessions Modal */}
