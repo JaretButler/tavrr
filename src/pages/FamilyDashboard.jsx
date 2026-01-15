@@ -34,6 +34,7 @@ export default function FamilyDashboard() {
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showRequestSession, setShowRequestSession] = useState(false);
   const [selectedCoachForSlots, setSelectedCoachForSlots] = useState(null);
+  const [availableSubTab, setAvailableSubTab] = useState('slots');
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -327,33 +328,17 @@ export default function FamilyDashboard() {
               </TabsTrigger>
             </TabsList>
             
-            <div className="flex items-center gap-2">
+            {isLocked && (
               <Button
-                onClick={() => setShowRequestSession(true)}
-                className="bg-[#0066CC] hover:bg-[#0052A3] h-10 w-32 text-sm"
+                variant="outline"
+                onClick={() => sendPaymentReminderMutation.mutate()}
+                disabled={sendPaymentReminderMutation.isPending}
+                className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5 h-10 px-6"
               >
-                <Plus className="w-4 h-4 -mr-2" />
-                Request Session
+                <DollarSign className="w-4 h-4" />
+                <span>Send Payment Reminder</span>
               </Button>
-              <Button
-                onClick={() => setActiveTab('available')}
-                variant={activeTab === 'available' ? 'default' : 'outline'}
-                className={activeTab === 'available' ? 'bg-[#0066CC] hover:bg-[#0052A3] h-10 text-sm' : 'h-10 text-sm'}
-              >
-                Available Sessions
-              </Button>
-              {isLocked && (
-                <Button
-                  variant="outline"
-                  onClick={() => sendPaymentReminderMutation.mutate()}
-                  disabled={sendPaymentReminderMutation.isPending}
-                  className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5 h-10 px-6"
-                >
-                  <DollarSign className="w-4 h-4" />
-                  <span>Send Payment Reminder</span>
-                </Button>
-              )}
-            </div>
+            )}
           </div>
 
           <TabsContent value="dashboard">
@@ -593,99 +578,168 @@ export default function FamilyDashboard() {
 
         <TabsContent value="available">
           <div className="space-y-6">
-            {/* Coach Selector */}
-            <div className="bg-white rounded-2xl border border-neutral-100 p-6">
-              <label className="block text-sm font-medium text-neutral-700 mb-3">
-                Select Instructor
-              </label>
-              <select
-                value={selectedCoachForSlots || ''}
-                onChange={(e) => setSelectedCoachForSlots(e.target.value || null)}
-                className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066CC]"
+            {/* Sub-tabs */}
+            <div className="flex items-center gap-2 border-b border-neutral-100 pb-4">
+              <Button
+                onClick={() => setAvailableSubTab('slots')}
+                variant={availableSubTab === 'slots' ? 'default' : 'ghost'}
+                className={availableSubTab === 'slots' ? 'bg-[#0066CC] hover:bg-[#0052A3]' : ''}
               >
-                <option value="">Choose an instructor...</option>
-                {coaches.map(coach => (
-                  <option key={coach.id} value={coach.id}>
-                    {coach.display_name} {coach.sport_discipline && `- ${coach.sport_discipline}`}
-                  </option>
-                ))}
-              </select>
+                Available Slots
+              </Button>
+              <Button
+                onClick={() => setAvailableSubTab('rsvp')}
+                variant={availableSubTab === 'rsvp' ? 'default' : 'ghost'}
+                className={availableSubTab === 'rsvp' ? 'bg-[#0066CC] hover:bg-[#0052A3]' : ''}
+              >
+                Sessions to RSVP
+              </Button>
+              <Button
+                onClick={() => setShowRequestSession(true)}
+                variant="outline"
+                className="ml-auto"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Request Session
+              </Button>
             </div>
 
-            {/* Available Slots */}
-            {selectedCoachForSlots && (
+            {/* Available Slots Tab */}
+            {availableSubTab === 'slots' && (
+              <div className="space-y-6">
+                {/* Coach Selector */}
+                <div className="bg-white rounded-2xl border border-neutral-100 p-6">
+                  <label className="block text-sm font-medium text-neutral-700 mb-3">
+                    Select Instructor
+                  </label>
+                  <select
+                    value={selectedCoachForSlots || ''}
+                    onChange={(e) => setSelectedCoachForSlots(e.target.value || null)}
+                    className="w-full px-4 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066CC]"
+                  >
+                    <option value="">Choose an instructor...</option>
+                    {coaches.map(coach => (
+                      <option key={coach.id} value={coach.id}>
+                        {coach.display_name} {coach.sport_discipline && `- ${coach.sport_discipline}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Available Slots */}
+                {selectedCoachForSlots && (
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
+                        Available Sessions
+                      </span>
+                      <span className="text-xs text-neutral-400">
+                        {openSlots.length} slot{openSlots.length !== 1 ? 's' : ''} available
+                      </span>
+                    </div>
+
+                    {openSlots.length === 0 ? (
+                      <div className="bg-white rounded-2xl border border-neutral-100 p-8 text-center">
+                        <p className="text-neutral-400">No available sessions at this time</p>
+                      </div>
+                    ) : (
+                      <div className="grid gap-4">
+                        {openSlots.map(slot => {
+                          const coach = coaches.find(c => c.id === slot.coach_id);
+                          const slotDate = new Date(slot.scheduled_time);
+
+                          return (
+                            <motion.div
+                              key={slot.id}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="bg-white rounded-2xl border border-neutral-100 p-6 hover:border-[#0066CC] transition-colors"
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 rounded-full bg-[#0066CC] flex items-center justify-center text-white font-medium">
+                                      {coach?.display_name?.charAt(0)}
+                                    </div>
+                                    <div>
+                                      <h3 className="text-sm font-medium text-neutral-900">
+                                        {coach?.display_name}
+                                      </h3>
+                                      <p className="text-xs text-neutral-400">
+                                        {format(slotDate, 'EEEE, MMM d')} · {format(slotDate, 'h:mm a')}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex items-center gap-4 text-xs text-neutral-500">
+                                    {slot.facility_name && (
+                                      <span className="flex items-center gap-1">
+                                        <Calendar className="w-3 h-3" />
+                                        {slot.facility_name}
+                                      </span>
+                                    )}
+                                    <span>{slot.duration_minutes} min</span>
+                                    {slot.session_type && (
+                                      <span className="capitalize">{slot.session_type}</span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div className="text-right">
+                                  <div className="text-lg font-semibold text-neutral-900 mb-2">
+                                    ${slot.rate}
+                                  </div>
+                                  <Button
+                                    className="bg-[#0066CC] hover:bg-[#0052A3] text-xs h-8"
+                                    onClick={() => {
+                                      // TODO: Implement booking flow
+                                    }}
+                                  >
+                                    Book Now
+                                  </Button>
+                                </div>
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Sessions to RSVP Tab */}
+            {availableSubTab === 'rsvp' && (
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
-                    Available Sessions
+                    Sessions to RSVP
                   </span>
                   <span className="text-xs text-neutral-400">
-                    {openSlots.length} slot{openSlots.length !== 1 ? 's' : ''} available
+                    {filteredSessions.filter(s => s.rsvp_status === 'pending').length} pending
                   </span>
                 </div>
 
-                {openSlots.length === 0 ? (
+                {filteredSessions.filter(s => s.rsvp_status === 'pending').length === 0 ? (
                   <div className="bg-white rounded-2xl border border-neutral-100 p-8 text-center">
-                    <p className="text-neutral-400">No available sessions at this time</p>
+                    <p className="text-neutral-400">No sessions pending RSVP</p>
                   </div>
                 ) : (
-                  <div className="grid gap-4">
-                    {openSlots.map(slot => {
-                      const coach = coaches.find(c => c.id === slot.coach_id);
-                      const slotDate = new Date(slot.scheduled_time);
+                  <div className="space-y-4">
+                    {filteredSessions.filter(s => s.rsvp_status === 'pending').map(session => {
+                      const athlete = athletes.find(a => a.id === session.athlete_id);
+                      const coach = coaches.find(c => c.id === session.coach_id);
 
                       return (
-                        <motion.div
-                          key={slot.id}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          className="bg-white rounded-2xl border border-neutral-100 p-6 hover:border-[#0066CC] transition-colors"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-3">
-                                <div className="w-10 h-10 rounded-full bg-[#0066CC] flex items-center justify-center text-white font-medium">
-                                  {coach?.display_name?.charAt(0)}
-                                </div>
-                                <div>
-                                  <h3 className="text-sm font-medium text-neutral-900">
-                                    {coach?.display_name}
-                                  </h3>
-                                  <p className="text-xs text-neutral-400">
-                                    {format(slotDate, 'EEEE, MMM d')} · {format(slotDate, 'h:mm a')}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-4 text-xs text-neutral-500">
-                                {slot.facility_name && (
-                                  <span className="flex items-center gap-1">
-                                    <Calendar className="w-3 h-3" />
-                                    {slot.facility_name}
-                                  </span>
-                                )}
-                                <span>{slot.duration_minutes} min</span>
-                                {slot.session_type && (
-                                  <span className="capitalize">{slot.session_type}</span>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="text-right">
-                              <div className="text-lg font-semibold text-neutral-900 mb-2">
-                                ${slot.rate}
-                              </div>
-                              <Button
-                                className="bg-[#0066CC] hover:bg-[#0052A3] text-xs h-8"
-                                onClick={() => {
-                                  // TODO: Implement booking flow
-                                }}
-                              >
-                                Book Now
-                              </Button>
-                            </div>
-                          </div>
-                        </motion.div>
+                        <FamilySessionCard
+                          key={session.id}
+                          session={session}
+                          athlete={athlete}
+                          coach={coach}
+                          onRsvp={(sessionId, status) => rsvpMutation.mutate({ sessionId, status })}
+                          isLocked={isLocked}
+                        />
                       );
                     })}
                   </div>
