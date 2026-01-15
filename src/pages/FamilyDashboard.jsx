@@ -487,8 +487,7 @@ export default function FamilyDashboard() {
               className="flex items-center justify-center gap-2 h-10 w-full"
             >
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              <span className="font-medium">{completedSessions.length}</span>
-              <span className="text-neutral-500">Sessions</span>
+              <span className="text-neutral-500">Session History</span>
             </Button>
           </div>
 
