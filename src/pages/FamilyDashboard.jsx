@@ -266,7 +266,9 @@ export default function FamilyDashboard() {
   const owedCoach = sessions
     .filter(s => s.status === 'verified' || s.status === 'completed')
     .sort((a, b) => new Date(b.scheduled_time) - new Date(a.scheduled_time))[0]?.coach_id;
-  const coachName = coaches.find(c => c.id === owedCoach)?.display_name;
+  const owedCoachData = coaches.find(c => c.id === owedCoach);
+  const coachName = owedCoachData?.display_name;
+  const coachAcceptedMethods = owedCoachData?.accepted_payment_methods || [];
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -400,6 +402,7 @@ export default function FamilyDashboard() {
                   biometricEnabled={family?.biometric_enabled}
                   paymentMethods={family?.payment_methods || []}
                   coachName={coachName}
+                  coachAcceptedMethods={coachAcceptedMethods}
                 />
               )}
             </motion.div>

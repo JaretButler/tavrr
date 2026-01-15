@@ -5,9 +5,22 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 
-export default function BalanceCard({ balance = 0, onSettle, isSettling, biometricEnabled, paymentMethods = [], coachName }) {
+export default function BalanceCard({ balance = 0, onSettle, isSettling, biometricEnabled, paymentMethods = [], coachName, coachAcceptedMethods = [] }) {
   const hasBalance = balance > 0;
-  const hasPaymentMethod = paymentMethods.length > 0;
+  
+  // Filter payment methods based on what coach accepts
+  const compatibleMethods = paymentMethods.filter(method => {
+    if (!coachAcceptedMethods.length) return true; // If no restrictions, allow all
+    
+    // Map family payment method types to coach accepted types
+    if (method.type === 'card') {
+      return coachAcceptedMethods.includes('apple_pay') || coachAcceptedMethods.includes('google_pay');
+    }
+    // For other payment types, check direct match
+    return coachAcceptedMethods.includes(method.type);
+  });
+  
+  const hasPaymentMethod = compatibleMethods.length > 0;
 
   return (
     <motion.div
@@ -51,12 +64,19 @@ export default function BalanceCard({ balance = 0, onSettle, isSettling, biometr
             </div>
             
             {!hasPaymentMethod ? (
-              <Link to={createPageUrl('PaymentSettings')}>
-                <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white h-12 rounded-xl font-medium">
-                  <CreditCard className="w-5 h-5 mr-2" />
-                  Add Payment Method to Settle
-                </Button>
-              </Link>
+              <div className="space-y-2">
+                {paymentMethods.length > 0 && (
+                  <p className="text-xs text-amber-700 text-center">
+                    Your payment methods aren't accepted by {coachName}. Accepted: {coachAcceptedMethods.join(', ')}
+                  </p>
+                )}
+                <Link to={createPageUrl('PaymentSettings')}>
+                  <Button className="w-full bg-amber-600 hover:bg-amber-700 text-white h-12 rounded-xl font-medium">
+                    <CreditCard className="w-5 h-5 mr-2" />
+                    Add Compatible Payment Method
+                  </Button>
+                </Link>
+              </div>
             ) : (
               <Button 
                 onClick={onSettle}
