@@ -348,6 +348,24 @@ export default function CoachDashboard() {
           <div className="mb-6 space-y-3">
             <div className="flex gap-2">
               <Button
+                variant="outline"
+                onClick={() => setActiveTab('dashboard')}
+                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1"
+              >
+                <Home className="w-4 h-4 mr-2" />
+                Home
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setActiveTab('admin')}
+                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1"
+              >
+                Admin
+              </Button>
+            </div>
+
+            <div className="flex gap-2">
+              <Button
                 variant="default"
                 onClick={() => setShowAddSessionModal(true)}
                 className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start flex-1"
@@ -368,24 +386,6 @@ export default function CoachDashboard() {
                     {unreadMessages.length}
                   </span>
                 )}
-              </Button>
-            </div>
-
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                onClick={() => setActiveTab('dashboard')}
-                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1"
-              >
-                <Home className="w-4 h-4 mr-2" />
-                Home
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setActiveTab('admin')}
-                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1"
-              >
-                Admin
               </Button>
             </div>
           </div>
