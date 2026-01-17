@@ -24,7 +24,7 @@ export default function AccountTypeSelector({ onSelect }) {
             Welcome to Tavrr
           </h1>
           <p className="text-lg text-neutral-600 mb-2">
-            Perfectly Designed. For Everyone.
+            One Platform. Perfect Design.
           </p>
           <p className="text-sm text-neutral-400">
             Effortless scheduling, instant payments, and seamless coordination for instructors, families, athletes, and students alike.
