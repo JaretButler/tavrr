@@ -27,7 +27,7 @@ export default function AccountTypeSelector({ onSelect }) {
             One Platform. Effortless. Crafted for the student and competitor. Empowering the instructor.
           </p>
           <p className="text-sm text-neutral-400">
-            Effortless scheduling, instant payments, and seamless coordination for instructors, families, athletes, and students alike.
+            Intelligent scheduling, instant payments, and seamless coordination for instructors, families, athletes, and students alike.
           </p>
         </div>
 
