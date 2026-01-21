@@ -356,9 +356,9 @@ export default function FamilyDashboard() {
               <div className="flex gap-3">
                 <Button
                   onClick={() => setShowRequestSession(true)}
-                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] h-10 px-6"
+                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] h-7 px-4 text-sm"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5" />
                   <span>Request Session</span>
                 </Button>
                 {isLocked && (
