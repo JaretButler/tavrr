@@ -25,6 +25,7 @@ import PublishOpenSlotModal from '@/components/coach/PublishOpenSlotModal';
 import OpenSlotsManager from '@/components/coach/OpenSlotsManager';
 import NotificationPanel from '@/components/notifications/NotificationPanel';
 import RecurringSessionsManager from '@/components/coach/RecurringSessionsManager';
+import CreateRecurringSessionModal from '@/components/coach/CreateRecurringSessionModal';
 
 export default function CoachDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -38,6 +39,7 @@ export default function CoachDashboard() {
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showPublishSlot, setShowPublishSlot] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showCreateRecurring, setShowCreateRecurring] = useState(false);
   const messagesEndRef = useRef(null);
   const queryClient = useQueryClient();
 
@@ -609,12 +611,24 @@ export default function CoachDashboard() {
 
             <TabsContent value="recurring">
               <div className="max-w-4xl">
-                <div className="mb-6">
-                  <h2 className="text-xl font-medium text-neutral-900 mb-2">Recurring Sessions</h2>
-                  <p className="text-sm text-neutral-500">Manage and approve recurring session patterns</p>
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-xl font-medium text-neutral-900 mb-2">Recurring Sessions</h2>
+                    <p className="text-sm text-neutral-500">Manage and approve recurring session patterns</p>
+                  </div>
+                  <Button
+                    onClick={() => setShowCreateRecurring(true)}
+                    className="bg-[#0066CC] hover:bg-[#0052A3]"
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Recurring
+                  </Button>
                 </div>
 
-                <RecurringSessionsManager coachId={coach?.id} />
+                <RecurringSessionsManager 
+                  coachId={coach?.id}
+                  onCreateNew={() => setShowCreateRecurring(true)}
+                />
               </div>
             </TabsContent>
 
@@ -728,6 +742,15 @@ export default function CoachDashboard() {
         onClose={() => setShowPublishSlot(false)}
         coach={coach}
         onSuccess={() => queryClient.invalidateQueries({ queryKey: ['openSlots'] })}
+      />
+
+      {/* Create Recurring Session Modal */}
+      <CreateRecurringSessionModal
+        isOpen={showCreateRecurring}
+        onClose={() => setShowCreateRecurring(false)}
+        coach={coach}
+        athletes={athletes}
+        onSuccess={() => queryClient.invalidateQueries({ queryKey: ['recurringSessions'] })}
       />
 
       {/* Notification Panel */}

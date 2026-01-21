@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { motion } from 'framer-motion';
-import { Repeat, Check, X, Calendar, Clock, Pause, Play } from 'lucide-react';
+import { Repeat, Check, X, Calendar, Clock, Pause, Play, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { format, addDays, addWeeks, addMonths, parseISO } from 'date-fns';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function RecurringSessionsManager({ coachId }) {
+export default function RecurringSessionsManager({ coachId, onCreateNew }) {
   const [generatingFor, setGeneratingFor] = useState(null);
   const queryClient = useQueryClient();
 
@@ -148,7 +148,14 @@ export default function RecurringSessionsManager({ coachId }) {
     return (
       <div className="bg-white rounded-2xl border border-neutral-100 p-12 text-center">
         <Repeat className="w-10 h-10 text-neutral-200 mx-auto mb-4" />
-        <p className="text-neutral-500">No recurring sessions</p>
+        <p className="text-neutral-500 mb-4">No recurring sessions</p>
+        <Button
+          onClick={onCreateNew}
+          className="bg-[#0066CC] hover:bg-[#0052A3]"
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Create Recurring Session
+        </Button>
       </div>
     );
   }
