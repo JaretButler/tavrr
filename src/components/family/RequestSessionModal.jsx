@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, User } from 'lucide-react';
+import { X, Calendar, Clock, User, Repeat } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { format, addDays } from 'date-fns';
@@ -12,6 +12,9 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
   const [selectedAthlete, setSelectedAthlete] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
+  const [isRecurring, setIsRecurring] = useState(false);
+  const [recurrencePattern, setRecurrencePattern] = useState('weekly');
+  const [recurrenceEndDate, setRecurrenceEndDate] = useState('');
 
   const requestMutation = useMutation({
     mutationFn: async () => {
@@ -20,26 +23,56 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
       
       const dateTime = new Date(`${selectedDate}T${selectedTime}`);
       
-      // Create a booking request
-      await base44.entities.BookingRequest.create({
-        family_id: family.id,
-        coach_id: selectedCoach,
-        athlete_id: selectedAthlete,
-        requested_time: dateTime.toISOString(),
-      });
+      if (isRecurring) {
+        // Create a recurring session request
+        const dayOfWeek = dateTime.getDay();
+        await base44.entities.RecurringSession.create({
+          family_id: family.id,
+          coach_id: selectedCoach,
+          athlete_id: selectedAthlete,
+          day_of_week: dayOfWeek,
+          time: selectedTime,
+          duration_minutes: 60,
+          rate: coach.hourly_rate || 60,
+          recurrence_pattern: recurrencePattern,
+          recurrence_end_date: recurrenceEndDate,
+          status: 'pending',
+        });
 
-      // Send message to coach
-      const conversationId = `conv_${family.id}_${selectedCoach}_${selectedAthlete}_${Date.now()}`;
-      await base44.entities.Message.create({
-        conversation_id: conversationId,
-        sender_id: family.id,
-        sender_type: 'family',
-        receiver_id: selectedCoach,
-        receiver_type: 'coach',
-        content: `Hi ${coach.display_name}! I'd like to request a session for ${athlete.name} on ${format(dateTime, 'EEEE, MMMM d')} at ${format(dateTime, 'h:mm a')}. Please let me know if this works for you!`,
-        message_type: 'text',
-        athlete_id: selectedAthlete,
-      });
+        // Send message to coach about recurring request
+        const conversationId = `conv_${family.id}_${selectedCoach}_${selectedAthlete}_${Date.now()}`;
+        await base44.entities.Message.create({
+          conversation_id: conversationId,
+          sender_id: family.id,
+          sender_type: 'family',
+          receiver_id: selectedCoach,
+          receiver_type: 'coach',
+          content: `Hi ${coach.display_name}! I'd like to request recurring ${recurrencePattern} sessions for ${athlete.name} on ${format(dateTime, 'EEEE')}s at ${format(dateTime, 'h:mm a')}${recurrenceEndDate ? ` until ${format(new Date(recurrenceEndDate), 'MMM d, yyyy')}` : ''}. Please let me know if this works for you!`,
+          message_type: 'text',
+          athlete_id: selectedAthlete,
+        });
+      } else {
+        // Create a one-time booking request
+        await base44.entities.BookingRequest.create({
+          family_id: family.id,
+          coach_id: selectedCoach,
+          athlete_id: selectedAthlete,
+          requested_time: dateTime.toISOString(),
+        });
+
+        // Send message to coach
+        const conversationId = `conv_${family.id}_${selectedCoach}_${selectedAthlete}_${Date.now()}`;
+        await base44.entities.Message.create({
+          conversation_id: conversationId,
+          sender_id: family.id,
+          sender_type: 'family',
+          receiver_id: selectedCoach,
+          receiver_type: 'coach',
+          content: `Hi ${coach.display_name}! I'd like to request a session for ${athlete.name} on ${format(dateTime, 'EEEE, MMMM d')} at ${format(dateTime, 'h:mm a')}. Please let me know if this works for you!`,
+          message_type: 'text',
+          athlete_id: selectedAthlete,
+        });
+      }
     },
     onSuccess: () => {
       onSuccess?.();
@@ -53,6 +86,9 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
     setSelectedAthlete('');
     setSelectedDate('');
     setSelectedTime('');
+    setIsRecurring(false);
+    setRecurrencePattern('weekly');
+    setRecurrenceEndDate('');
   };
 
   const handleClose = () => {
@@ -172,6 +208,53 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
             </Select>
           </div>
 
+          {/* Recurring Option */}
+          <div className="flex items-center gap-2 pt-2">
+            <input
+              type="checkbox"
+              id="isRecurring-embedded"
+              checked={isRecurring}
+              onChange={(e) => setIsRecurring(e.target.checked)}
+              className="w-4 h-4 text-[#0066CC] bg-white border-neutral-300 rounded focus:ring-[#0066CC]"
+            />
+            <label htmlFor="isRecurring-embedded" className="text-sm font-medium text-neutral-700 flex items-center gap-2">
+              <Repeat className="w-4 h-4" />
+              Make this recurring
+            </label>
+          </div>
+
+          {isRecurring && (
+            <div className="space-y-3 pt-2">
+              <div>
+                <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                  Repeat Every
+                </label>
+                <Select value={recurrencePattern} onValueChange={setRecurrencePattern}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="weekly">Week</SelectItem>
+                    <SelectItem value="biweekly">2 Weeks</SelectItem>
+                    <SelectItem value="monthly">Month</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                  End Date (Optional)
+                </label>
+                <input
+                  type="date"
+                  value={recurrenceEndDate}
+                  onChange={(e) => setRecurrenceEndDate(e.target.value)}
+                  className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066CC]"
+                />
+              </div>
+            </div>
+          )}
+
           {/* Submit Button */}
           <Button
             onClick={() => requestMutation.mutate()}
@@ -290,6 +373,53 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Recurring Option */}
+            <div className="flex items-center gap-2 pt-2">
+              <input
+                type="checkbox"
+                id="isRecurring-modal"
+                checked={isRecurring}
+                onChange={(e) => setIsRecurring(e.target.checked)}
+                className="w-4 h-4 text-[#0066CC] bg-white border-neutral-300 rounded focus:ring-[#0066CC]"
+              />
+              <label htmlFor="isRecurring-modal" className="text-sm font-medium text-neutral-700 flex items-center gap-2">
+                <Repeat className="w-4 h-4" />
+                Make this recurring
+              </label>
+            </div>
+
+            {isRecurring && (
+              <div className="space-y-3 pt-2">
+                <div>
+                  <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                    Repeat Every
+                  </label>
+                  <Select value={recurrencePattern} onValueChange={setRecurrencePattern}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="weekly">Week</SelectItem>
+                      <SelectItem value="biweekly">2 Weeks</SelectItem>
+                      <SelectItem value="monthly">Month</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                    End Date (Optional)
+                  </label>
+                  <input
+                    type="date"
+                    value={recurrenceEndDate}
+                    onChange={(e) => setRecurrenceEndDate(e.target.value)}
+                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066CC]"
+                  />
+                </div>
+              </div>
+            )}
 
             {/* Actions */}
             <div className="flex gap-3 pt-4">

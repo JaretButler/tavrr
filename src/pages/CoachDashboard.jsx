@@ -24,6 +24,7 @@ import ProfileSettingsModal from '@/components/settings/ProfileSettingsModal';
 import PublishOpenSlotModal from '@/components/coach/PublishOpenSlotModal';
 import OpenSlotsManager from '@/components/coach/OpenSlotsManager';
 import NotificationPanel from '@/components/notifications/NotificationPanel';
+import RecurringSessionsManager from '@/components/coach/RecurringSessionsManager';
 
 export default function CoachDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -551,6 +552,7 @@ export default function CoachDashboard() {
                 <TabsTrigger value="revenue">Revenue</TabsTrigger>
                 <TabsTrigger value="payments">Payment History</TabsTrigger>
                 <TabsTrigger value="sessionHistory">Past Sessions</TabsTrigger>
+                <TabsTrigger value="recurring">Recurring Sessions</TabsTrigger>
                 <TabsTrigger value="openSlots">Open Slots</TabsTrigger>
               </TabsList>
 
@@ -602,6 +604,17 @@ export default function CoachDashboard() {
                     }
                   }}
                 />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="recurring">
+              <div className="max-w-4xl">
+                <div className="mb-6">
+                  <h2 className="text-xl font-medium text-neutral-900 mb-2">Recurring Sessions</h2>
+                  <p className="text-sm text-neutral-500">Manage and approve recurring session patterns</p>
+                </div>
+
+                <RecurringSessionsManager coachId={coach?.id} />
               </div>
             </TabsContent>
 
