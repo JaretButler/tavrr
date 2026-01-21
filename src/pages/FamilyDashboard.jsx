@@ -352,16 +352,27 @@ export default function FamilyDashboard() {
               </TabsTrigger>
             </TabsList>
             
-            {activeTab === 'dashboard' && isLocked && (
-              <Button
-                variant="outline"
-                onClick={() => sendPaymentReminderMutation.mutate()}
-                disabled={sendPaymentReminderMutation.isPending}
-                className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5 h-10 px-6"
-              >
-                <DollarSign className="w-4 h-4" />
-                <span>Send Payment Reminder</span>
-              </Button>
+            {activeTab === 'dashboard' && (
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => setShowRequestSession(true)}
+                  className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] h-10 px-6"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Request Session</span>
+                </Button>
+                {isLocked && (
+                  <Button
+                    variant="outline"
+                    onClick={() => sendPaymentReminderMutation.mutate()}
+                    disabled={sendPaymentReminderMutation.isPending}
+                    className="flex items-center gap-2 text-[#0066CC] border-[#0066CC] hover:bg-[#0066CC]/5 h-10 px-6"
+                  >
+                    <DollarSign className="w-4 h-4" />
+                    <span>Send Payment Reminder</span>
+                  </Button>
+                )}
+              </div>
             )}
           </div>
 
@@ -795,7 +806,26 @@ export default function FamilyDashboard() {
         isLoading={deleteProfileMutation.isPending}
       />
 
+      {/* Request Session Modal */}
+      <RequestSessionModal
+        isOpen={showRequestSession}
+        onClose={() => setShowRequestSession(false)}
+        coaches={coaches}
+        athletes={athletes}
+        family={family}
+        onSuccess={() => {
+          queryClient.invalidateQueries({ queryKey: ['messages'] });
+          setShowRequestSession(false);
+          setActiveTab('messages');
+        }}
+      />
 
+      {/* Notification Panel */}
+      <NotificationPanel
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
+        notifications={notifications}
+      />
     </div>
   );
 }
