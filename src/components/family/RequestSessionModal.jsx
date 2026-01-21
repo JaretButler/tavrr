@@ -47,7 +47,7 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
           sender_type: 'family',
           receiver_id: selectedCoach,
           receiver_type: 'coach',
-          content: `Hi ${coach.display_name}! I'd like to request recurring ${recurrencePattern} sessions for ${athlete.name} on ${format(dateTime, 'EEEE')}s at ${format(dateTime, 'h:mm a')}${recurrenceEndDate ? ` until ${format(new Date(recurrenceEndDate), 'MMM d, yyyy')}` : ''}. Please let me know if this works for you!`,
+          content: `Hi ${coach.display_name}! I'd like to request recurring ${recurrencePattern} lessons for ${athlete.name} on ${format(dateTime, 'EEEE')}s at ${format(dateTime, 'h:mm a')}${recurrenceEndDate ? ` until ${format(new Date(recurrenceEndDate), 'MMM d, yyyy')}` : ''}. Please let me know if this works for you!`,
           message_type: 'text',
           athlete_id: selectedAthlete,
         });
@@ -68,7 +68,7 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
           sender_type: 'family',
           receiver_id: selectedCoach,
           receiver_type: 'coach',
-          content: `Hi ${coach.display_name}! I'd like to request a session for ${athlete.name} on ${format(dateTime, 'EEEE, MMMM d')} at ${format(dateTime, 'h:mm a')}. Please let me know if this works for you!`,
+          content: `Hi ${coach.display_name}! I'd like to request a lesson for ${athlete.name} on ${format(dateTime, 'EEEE, MMMM d')} at ${format(dateTime, 'h:mm a')}. Please let me know if this works for you!`,
           message_type: 'text',
           athlete_id: selectedAthlete,
         });
@@ -127,11 +127,11 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
           {/* Coach Selection */}
           <div>
             <label className="text-sm font-medium text-neutral-700 mb-2 block">
-              Select Coach
+              Select Instructor
             </label>
             <Select value={selectedCoach} onValueChange={setSelectedCoach}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Choose a coach..." />
+                <SelectValue placeholder="Choose an instructor..." />
               </SelectTrigger>
               <SelectContent>
                 {coaches.map(coach => (
@@ -146,11 +146,11 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
           {/* Athlete Selection */}
           <div>
             <label className="text-sm font-medium text-neutral-700 mb-2 block">
-              Select Athlete
+              Select Student
             </label>
             <Select value={selectedAthlete} onValueChange={setSelectedAthlete}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Choose athlete..." />
+                <SelectValue placeholder="Choose student..." />
               </SelectTrigger>
               <SelectContent>
                 {athletes.map(athlete => (
@@ -293,11 +293,11 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
             {/* Coach Selection */}
             <div>
               <label className="text-sm font-medium text-neutral-700 mb-2 block">
-                Select Coach
+                Select Instructor
               </label>
               <Select value={selectedCoach} onValueChange={setSelectedCoach}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Choose a coach..." />
+                  <SelectValue placeholder="Choose an instructor..." />
                 </SelectTrigger>
                 <SelectContent>
                   {coaches.map(coach => (
@@ -312,11 +312,11 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
             {/* Athlete Selection */}
             <div>
               <label className="text-sm font-medium text-neutral-700 mb-2 block">
-                Select Athlete
+                Select Student
               </label>
               <Select value={selectedAthlete} onValueChange={setSelectedAthlete}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Choose athlete..." />
+                  <SelectValue placeholder="Choose student..." />
                 </SelectTrigger>
                 <SelectContent>
                   {athletes.map(athlete => (
