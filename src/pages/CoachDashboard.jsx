@@ -317,7 +317,7 @@ export default function CoachDashboard() {
               />
               <div className="border-l border-neutral-200 pl-4">
                 <h1 className="text-sm font-medium text-neutral-900">Instructor Jaret</h1>
-                <p className="text-xs text-neutral-500">Lacrosse Instructor</p>
+                <p className="text-xs text-neutral-500">Lacrosse Coach</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
