@@ -146,7 +146,7 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
           {/* Athlete Selection */}
           <div>
             <label className="text-sm font-medium text-neutral-700 mb-2 block">
-              Select Student
+              Select Student/Athlete
             </label>
             <Select value={selectedAthlete} onValueChange={setSelectedAthlete}>
               <SelectTrigger className="w-full">
