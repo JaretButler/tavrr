@@ -20,9 +20,6 @@ export default function AccountTypeSelector({ onSelect }) {
               className="h-[88px]"
             />
           </div>
-          <h1 className="font-light text-neutral-900 mb-3 tracking-tight" style={{ fontSize: '2.1rem' }}>
-            Welcome to Tavrr
-          </h1>
           <p className="text-lg text-neutral-600 mb-2">
             Empowering the Instructor.
           </p>
