@@ -335,7 +335,7 @@ export default function CoachDashboard() {
               >
                 <Bell className="w-5 h-5 text-neutral-500" />
                 {unreadNotifications.length > 0 && (
-                  <span className="absolute top-2 right-2 w-2 h-2 bg-[#0066CC] rounded-full" />
+                  <span className="absolute top-2 right-2 w-2 h-2 bg-neutral-900 rounded-full" />
                 )}
               </Button>
               <Button variant="ghost" size="icon" onClick={() => setShowProfileSettings(true)}>
@@ -365,13 +365,13 @@ export default function CoachDashboard() {
               >
                 Admin
               </Button>
-            </div>
+              </div>
 
-            <div className="flex gap-2">
+              <div className="flex gap-2">
               <Button
                 variant="default"
                 onClick={() => setShowAddSessionModal(true)}
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start flex-1"
+                className="flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 justify-start flex-1"
               >
                 <Plus className="w-4 h-4" />
                 <span>Add Session</span>
@@ -380,7 +380,7 @@ export default function CoachDashboard() {
               <Button
                 variant="default"
                 onClick={() => setActiveTab('messages')}
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start flex-1"
+                className="flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 relative justify-start flex-1"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Messages</span>
@@ -480,7 +480,7 @@ export default function CoachDashboard() {
                   <Button
                     variant="default"
                     onClick={() => setShowTodaySessionsModal(true)}
-                    className="w-full bg-[#0066CC] hover:bg-[#0052A3] text-sm"
+                    className="w-full bg-neutral-900 hover:bg-neutral-800 text-sm"
                   >
                     Message Today's Session
                   </Button>
@@ -618,7 +618,7 @@ export default function CoachDashboard() {
                   </div>
                   <Button
                     onClick={() => setShowCreateRecurring(true)}
-                    className="bg-[#0066CC] hover:bg-[#0052A3]"
+                    className="bg-neutral-900 hover:bg-neutral-800"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Create Recurring
@@ -641,7 +641,7 @@ export default function CoachDashboard() {
                   </div>
                   <Button
                     onClick={() => setShowPublishSlot(true)}
-                    className="bg-[#0066CC] hover:bg-[#0052A3]"
+                    className="bg-neutral-900 hover:bg-neutral-800"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Publish Slot
