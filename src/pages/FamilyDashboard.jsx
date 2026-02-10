@@ -378,71 +378,8 @@ export default function FamilyDashboard() {
 
           <TabsContent value="dashboard">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Today's Training, Balance & Upcoming */}
+          {/* Left Column - Upcoming Sessions & Balance */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Today's Training */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-xs tracking-[0.2em] uppercase text-neutral-400 font-medium">
-                  {isToday(selectedDate) ? "Today's Session" : format(selectedDate, 'EEEE, MMM d')}
-                </span>
-              </div>
-
-              {isLoading ? (
-                <div className="space-y-4">
-                  {[1, 2].map(i => (
-                    <Skeleton key={i} className="h-48 w-full rounded-xl" />
-                  ))}
-                </div>
-              ) : selectedDateSessions.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-neutral-100 p-8 text-center">
-                  <p className="text-neutral-400">No training scheduled</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {selectedDateSessions.map(session => {
-                    const athlete = athletes.find(a => a.id === session.athlete_id);
-                    const coach = coaches.find(c => c.id === session.coach_id);
-
-                    return (
-                      <FamilySessionCard
-                        key={session.id}
-                        session={session}
-                        athlete={athlete}
-                        coach={coach}
-                        onRsvp={(sessionId, status) => rsvpMutation.mutate({ sessionId, status })}
-                        isLocked={isLocked}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-            </motion.div>
-
-            {/* Balance Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              {isLoading ? (
-                <Skeleton className="h-48 w-full rounded-2xl" />
-              ) : (
-                <BalanceCard
-                  balance={family?.current_balance || 0}
-                  onSettle={handleSettle}
-                  isSettling={isSettling}
-                  biometricEnabled={family?.biometric_enabled}
-                  paymentMethods={family?.payment_methods || []}
-                  coachName={coachName}
-                  coachAcceptedMethods={coachAcceptedMethods}
-                />
-              )}
-            </motion.div>
-
             {/* Upcoming Sessions */}
             <div>
               <div className="flex items-center justify-between mb-3">
@@ -506,6 +443,27 @@ export default function FamilyDashboard() {
                 )}
               </motion.div>
             </div>
+
+            {/* Balance Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              {isLoading ? (
+                <Skeleton className="h-48 w-full rounded-2xl" />
+              ) : (
+                <BalanceCard
+                  balance={family?.current_balance || 0}
+                  onSettle={handleSettle}
+                  isSettling={isSettling}
+                  biometricEnabled={family?.biometric_enabled}
+                  paymentMethods={family?.payment_methods || []}
+                  coachName={coachName}
+                  coachAcceptedMethods={coachAcceptedMethods}
+                />
+              )}
+            </motion.div>
 
             {/* Session History Button */}
             <Button
