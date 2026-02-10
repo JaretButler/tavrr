@@ -27,7 +27,7 @@ export default function AccountTypeSelector({ onSelect }) {
             Empowering the Instructor.
           </p>
           <p className="text-lg text-neutral-600 mb-2">
-            Crafted for the Student.
+            Crafted for Students and Competitors.
           </p>
           <p className="text-sm text-neutral-400">
             Intelligent scheduling, instant payments, and seamless coordination for instructors, families, athletes, and students.
