@@ -7,8 +7,8 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen bg-neutral-50">
       <style>{`
         :root {
-          --color-atlantic-blue: #0066CC;
-          --color-atlantic-blue-dark: #0052A3;
+          --color-atlantic-blue: #171717;
+          --color-atlantic-blue-dark: #0a0a0a;
         }
         
         * {
