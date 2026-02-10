@@ -352,15 +352,15 @@ export default function CoachDashboard() {
               <Button
                 variant="outline"
                 onClick={() => setActiveTab('dashboard')}
-                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1"
+                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1 h-8 text-xs px-3"
               >
-                <Home className="w-4 h-4 mr-2" />
+                <Home className="w-3.5 h-3.5 mr-1.5" />
                 Home
               </Button>
               <Button
                 variant="outline"
                 onClick={() => setActiveTab('admin')}
-                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1"
+                className="justify-start bg-neutral-100 border-neutral-200 hover:bg-neutral-200 text-neutral-900 flex-1 h-8 text-xs px-3"
               >
                 Admin
               </Button>
@@ -370,18 +370,18 @@ export default function CoachDashboard() {
               <Button
                 variant="default"
                 onClick={() => setShowAddSessionModal(true)}
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start flex-1"
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] justify-start flex-1 h-8 text-xs px-3"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-3.5 h-3.5" />
                 <span>Add Session</span>
               </Button>
 
               <Button
                 variant="default"
                 onClick={() => setActiveTab('messages')}
-                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start flex-1"
+                className="flex items-center gap-2 bg-[#0066CC] hover:bg-[#0052A3] relative justify-start flex-1 h-8 text-xs px-3"
               >
-                <MessageCircle className="w-4 h-4" />
+                <MessageCircle className="w-3.5 h-3.5" />
                 <span>Messages</span>
                 {unreadMessages.length > 0 && (
                   <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-red-500 rounded-full">
