@@ -12,12 +12,12 @@ export default function AccountTypeSelector({ onSelect }) {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-lg w-full"
       >
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <div className="flex justify-center mb-8">
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6965c061c9809ea85fc32161/f390a923b_tfA4gvqQ0K1ptroztEoWt.png"
               alt="Tavrr"
-              className="h-[88px]"
+              className="h-[96.8px]"
             />
           </div>
           <p className="text-lg text-neutral-600 mb-2">
