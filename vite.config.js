@@ -3,8 +3,13 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   logLevel: 'error', // Suppress warnings, only show errors
+  // Strip console.* and debugger statements from production builds only.
+  // Keeps them available locally (npm run dev) so you can still debug.
+  esbuild: {
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
+  },
   plugins: [
     base44({
       // Support for legacy code that imports the base44 SDK with @/integrations, @/entities, etc.
@@ -16,4 +21,4 @@ export default defineConfig({
     }),
     react(),
   ]
-});
+}));
