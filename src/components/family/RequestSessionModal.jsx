@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { format, addDays } from 'date-fns';
 import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { base44 } from '@/api/base44Client';
 
 export default function RequestSessionModal({ isOpen, onClose, coaches, athletes, family, onSuccess, embedded = false }) {
@@ -75,9 +76,19 @@ export default function RequestSessionModal({ isOpen, onClose, coaches, athletes
       }
     },
     onSuccess: () => {
+      toast.success('Session request sent!');
       onSuccess?.();
       onClose();
       resetForm();
+    },
+    onError: (error) => {
+      // Surface the failure so the parent isn't left wondering whether it worked.
+      // Form stays filled in so they can retry without re-entering everything.
+      const message =
+        error?.data?.message ||
+        error?.message ||
+        'Could not send the request. Please try again.';
+      toast.error(message);
     },
   });
 

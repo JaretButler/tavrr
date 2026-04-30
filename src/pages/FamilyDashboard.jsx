@@ -9,6 +9,7 @@ import { createPageUrl } from '@/utils';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from 'sonner';
 
 import AthleteSwitcher from '@/components/family/AthleteSwitcher';
 import BalanceCard from '@/components/family/BalanceCard';
@@ -680,7 +681,9 @@ export default function FamilyDashboard() {
                                   <Button
                                     className="bg-[#0066CC] hover:bg-[#0052A3] text-xs h-8"
                                     onClick={() => {
-                                      // TODO: Implement booking flow
+                                      toast.info(
+                                        'Direct booking is coming soon. For now, message your instructor to claim this slot.'
+                                      );
                                     }}
                                   >
                                     Book Now

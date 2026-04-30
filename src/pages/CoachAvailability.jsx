@@ -45,7 +45,7 @@ export default function CoachAvailability() {
   const updateCoachMutation = useMutation({
     mutationFn: (data) => base44.entities.Coach.update(coach.id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries(['coach']);
+      queryClient.invalidateQueries({ queryKey: ['coach'] });
       setEditingAbout(false);
       setEditingSpecialties(false);
     },

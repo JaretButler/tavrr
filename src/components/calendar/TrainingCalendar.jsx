@@ -109,9 +109,9 @@ export default function TrainingCalendar({ sessions = [], onDateSelect, selected
                 
                 {indicator && (
                   <div className="flex items-center gap-0.5">
-                    {daySessions.slice(0, 3).map((_, i) => (
-                      <div 
-                        key={i}
+                    {daySessions.slice(0, 3).map((session, i) => (
+                      <div
+                        key={session.id ?? i}
                         className={`w-1 h-1 rounded-full ${isSelected ? 'bg-white' : indicator}`}
                       />
                     ))}
